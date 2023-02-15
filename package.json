@@ -1,0 +1,32 @@
+{
+  "name": "curry-console",
+  "version": "0.0.1",
+  "description": "Adds color features to console, without changing standard functionality.",
+  "main": "index.mjs",
+  "type": "module",
+  "scripts": {
+    "test": "node tests/test1.mjs"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Codevendor/curry-console.git"
+  },
+  "keywords": [
+    "console",
+    "curry",
+    "curry console",
+    "curry-console",
+    "color console",
+    "console.log"
+  ],
+  "author": {
+    "name": "Adam Smith",
+    "url": "https://codevendor.com/"
+  },
+  "contributors": [],
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Codevendor/curry-console/issues"
+  },
+  "homepage": "https://github.com/Codevendor/curry-console#readme"
+}
