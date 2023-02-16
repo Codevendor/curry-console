@@ -42,16 +42,6 @@ export class curryConsole {
         this.#oldTrace = console.trace;
         this.#oldDebug = console.debug;
 
-        // Attach new events
-        /*
-                console.log = this.#log.bind(this);
-                console.info = this.#info.bind(this);
-                console.warn = this.#warn.bind(this);
-                console.error = this.#error.bind(this);
-                console.trace = this.#trace.bind(this);
-                console.debug = this.#debug.bind(this);
-        */
-
         const self = this;
 
         // Log Curry
@@ -80,77 +70,131 @@ export class curryConsole {
         };
 
         // Log info
-        console.info = (...x) => {
+        console.info = (...a) => {
 
-            if (x.length === 0 || (x.length > 0 && x[0].name === 'colorObject')) {
-                return (y) => {
-                    return (...z) => {
-                        self.#info(x, y, z);
-                    }
+            if (a.length === 0 || a[0]?.type === 'curryConsoleType') {
+
+                // Check for label
+                const found = a.find(item => item.name === 'labelObject');
+                if (found) {
+                    return (...b) => {
+                        return (...c) => {
+                            self.#info(a, b, c);
+                        };
+                    };
+                } else {
+                    return (...b) => {
+                        self.#info(a, b);
+                    };
                 }
+
             }
 
-            self.#oldInfo(...x);
+            self.#oldInfo(...a);
+
 
         };
 
         // Log warn
-        console.warn = (...x) => {
+        console.warn = (...a) => {
 
-            if (x.length === 0 || (x.length > 0 && x[0].name === 'colorObject')) {
-                return (y) => {
-                    return (...z) => {
-                        self.#warn(x, y, z);
-                    }
+            if (a.length === 0 || a[0]?.type === 'curryConsoleType') {
+
+                // Check for label
+                const found = a.find(item => item.name === 'labelObject');
+                if (found) {
+                    return (...b) => {
+                        return (...c) => {
+                            self.#warn(a, b, c);
+                        };
+                    };
+                } else {
+                    return (...b) => {
+                        self.#warn(a, b);
+                    };
                 }
+
             }
 
-            self.#oldWarn(...x);
+            self.#oldWarn(...a);
 
         };
 
         // Log error
-        console.error = (...x) => {
+        console.error = (...a) => {
 
-            if (x.length === 0 || (x.length > 0 && x[0].name === 'colorObject')) {
-                return (y) => {
-                    return (...z) => {
-                        self.#error(x, y, z);
-                    }
+            if (a.length === 0 || a[0]?.type === 'curryConsoleType') {
+
+                // Check for label
+                const found = a.find(item => item.name === 'labelObject');
+                if (found) {
+                    return (...b) => {
+                        return (...c) => {
+                            self.#error(a, b, c);
+                        };
+                    };
+                } else {
+                    return (...b) => {
+                        self.#error(a, b);
+                    };
                 }
+
             }
 
-            self.#oldError(...x);
+            self.#oldError(...a);
+
 
         };
 
         // Log trace
-        console.trace = (...x) => {
+        console.trace = (...a) => {
 
-            if (x.length === 0 || (x.length > 0 && x[0].name === 'colorObject')) {
-                return (y) => {
-                    return (...z) => {
-                        self.#trace(x, y, z);
-                    }
+            if (a.length === 0 || a[0]?.type === 'curryConsoleType') {
+
+                // Check for label
+                const found = a.find(item => item.name === 'labelObject');
+                if (found) {
+                    return (...b) => {
+                        return (...c) => {
+                            self.#trace(a, b, c);
+                        };
+                    };
+                } else {
+                    return (...b) => {
+                        self.#trace(a, b);
+                    };
                 }
+
             }
 
-            self.#oldTrace(...x);
+            self.#oldTrace(...a);
+
 
         };
 
         // Log debug
-        console.debug = (...x) => {
+        console.debug = (...a) => {
 
-            if (x.length === 0 || (x.length > 0 && x[0].name === 'colorObject')) {
-                return (y) => {
-                    return (...z) => {
-                        self.#debug(x, y, z);
-                    }
+            if (a.length === 0 || a[0]?.type === 'curryConsoleType') {
+
+                // Check for label
+                const found = a.find(item => item.name === 'labelObject');
+                if (found) {
+                    return (...b) => {
+                        return (...c) => {
+                            self.#debug(a, b, c);
+                        };
+                    };
+                } else {
+                    return (...b) => {
+                        self.#debug(a, b);
+                    };
                 }
+
             }
 
-            self.#oldDebug(...x);
+            self.#oldLog(...a);
+
 
         };
 
@@ -201,101 +245,6 @@ export class curryConsole {
 
     }
 
-    /**
-     * Writes the message to terminal.
-     * @param {*} method 
-     * @param {*} obj 
-     * @param {*} message 
-     */
-    #write(method, obj, ...message) {
-
-        // Add to session
-        this.#session.push({ method: method.name, message: message });
-
-        // Check if quiet mode
-        if (!this.#verbose) return;
-
-        // Call internal method to display message.
-        method(...message);
-    }
-
-    /**
-     * Displays the message to the console.
-     * @param {*} method - The method called.
-     * @param {*} obj - The object for writing.
-     */
-    #display(method, obj) {
-
-        if (!this.#verbose) return;
-
-        const diff = this.#calculate_time(obj.diff);
-
-        switch (method.name) {
-
-            case 'info':
-
-                if (obj.colors.length === 1 && obj.colors[0].toString() === '') {
-                    this.#write(method, obj, ' ' + COLOR.RESET + COLOR.BG_CYAN + COLOR.FG_BLACK + ' ' + obj['label'] + ' ' + COLOR.RESET + COLOR.FG_CYAN, ...obj.args, COLOR.DIM + COLOR.FG_WHITE + diff + COLOR.RESET);
-                } else {
-                    this.#write(method, obj, ' ' + COLOR.RESET + COLOR.BG_CYAN + COLOR.FG_BLACK + ' ' + obj['label'] + ' ' + COLOR.RESET + obj.colors.join(''), ...obj.args, COLOR.DIM + COLOR.FG_WHITE + diff + COLOR.RESET);
-                }
-
-                break;
-
-            case 'warn':
-
-                this.#write(method, obj, ' ' + COLOR.RESET + COLOR.BG_YELLOW + COLOR.FG_BLACK + ' ' + obj['label'] + ' ' + COLOR.RESET + COLOR.FG_YELLOW, ...obj.args, COLOR.DIM + COLOR.FG_WHITE + diff + COLOR.RESET);
-                break;
-
-            case 'error':
-
-                if (obj.colors.length === 1 && obj.colors[0].toString() === '') {
-                    this.#write(method, obj, ' ' + COLOR.RESET + COLOR.BG_RED + COLOR.FG_WHITE + ' ' + obj['label'] + ' ' + COLOR.RESET + COLOR.FG_RED, ...obj.args, COLOR.RESET + COLOR.DIM + COLOR.FG_WHITE + diff + COLOR.RESET);
-                } else {
-                    this.#write(method, obj, ' ' + COLOR.RESET + COLOR.BG_RED + COLOR.FG_WHITE + ' ' + obj['label'] + ' ' + COLOR.RESET + obj.colors.join(''), ...obj.args, COLOR.RESET + COLOR.DIM + COLOR.FG_WHITE + diff + COLOR.RESET);
-                }
-
-                break;
-
-            case 'trace':
-
-                if (obj.colors.length === 1 && obj.colors[0].toString() === '') {
-                    this.#write(method, obj, ' ' + COLOR.RESET + COLOR.BG_RED + COLOR.FG_WHITE + ' ' + obj['label'] + ' ' + COLOR.RESET + COLOR.FG_RED, ...obj.args, COLOR.RESET + COLOR.DIM + COLOR.FG_WHITE + diff + COLOR.RESET);
-                } else {
-                    this.#write(method, obj, ' ' + COLOR.RESET + COLOR.BG_RED + COLOR.FG_WHITE + ' ' + obj['label'] + ' ' + COLOR.RESET + obj.colors.join(''), ...obj.args, COLOR.RESET + COLOR.DIM + COLOR.FG_WHITE + diff + COLOR.RESET);
-                }
-
-                break;
-
-            case 'debug':
-
-                if (obj.colors.length === 1 && obj.colors[0].toString() === '') {
-                    this.#write(method, obj, ' ' + COLOR.RESET + COLOR.BG_MAGENTA + COLOR.FG_WHITE + ' ' + obj['label'] + ' ' + COLOR.RESET + COLOR.FG_MAGENTA, ...obj.args, COLOR.RESET + COLOR.DIM + COLOR.FG_WHITE + diff + COLOR.RESET);
-                } else {
-                    this.#write(method, obj, ' ' + COLOR.RESET + COLOR.BG_MAGENTA + COLOR.FG_WHITE + ' ' + obj['label'] + ' ' + COLOR.RESET + obj.colors.join(''), ...obj.args, COLOR.RESET + COLOR.DIM + COLOR.FG_WHITE + diff + COLOR.RESET);
-                }
-
-                break;
-
-            case 'log':
-
-                if (obj.colors.length === 1 && obj.colors[0].toString() === '') {
-                    this.#write(method, obj, COLOR.RESET + COLOR.FG_BLUE, ...obj.args, COLOR.RESET + COLOR.DIM + COLOR.FG_WHITE + diff + COLOR.RESET);
-                } else {
-                    this.#write(method, obj, COLOR.RESET + obj.colors.join(''), ...obj.args, COLOR.RESET + COLOR.DIM + COLOR.FG_WHITE + diff + COLOR.RESET);
-                }
-
-                break;
-
-            default:
-
-                this.#write(method, obj, ...obj.args);
-                break;
-
-        }
-
-    }
-
     /** Writes log to console if verbose is true. */
     #log() {
 
@@ -322,7 +271,6 @@ export class curryConsole {
 
             // Standard
             this.#oldLog(colors, ...arguments[1], prof);
-            //this.#write(this.#oldLog, obj, ' ' + COLOR.RESET + COLOR.BG_MAGENTA + COLOR.FG_WHITE + ' ' + obj['label'] + ' ' + COLOR.RESET + COLOR.FG_MAGENTA, ...obj.args, COLOR.RESET + COLOR.DIM + COLOR.FG_WHITE + diff + COLOR.RESET);
 
         } else {
 
@@ -337,33 +285,201 @@ export class curryConsole {
     }
 
     /** Writes info to console if verbose is true. */
-    #info(colors, label, args) {
-        const obj = this.#profiler('info', colors, label, args);
-        this.#display(this.#oldInfo, obj);
+    #info() {
+
+        // Check for profile
+        let prof = '';
+        let diff = 0;
+        let diffString = '';
+        if (this.#profile) {
+            diff = this.#profiler();
+            diffString = this.#calculate_time(diff);
+            prof = COLOR.RESET + COLOR.DIM + COLOR.WHITE + diffString + COLOR.RESET;
+        }
+
+        // Write to session
+
+        // Check if writing to session only.
+        if (!this.#verbose) return;
+
+        // Check type
+        if (arguments.length == 2) {
+
+            // Filter just colorObjects
+            const colors = COLOR.RESET + arguments[0].filter(item => item.name === 'colorObject').join('');
+
+            // Standard
+            this.#oldInfo(colors, ...arguments[1], prof);
+
+        } else {
+
+            // Filter just colorObjects
+            const labelColors = LABEL.RESET + arguments[0].filter(item => item.name === 'labelObject').join('');
+            const colors = COLOR.RESET + arguments[0].filter(item => item.name === 'colorObject').join('');
+
+            // Label + Standard
+            this.#oldInfo(labelColors, ...arguments[1], colors, ...arguments[2], prof);
+        }
+
     }
 
     /** Writes warn to console if verbose is true. */
-    #warn(colors, label, args) {
-        const obj = this.#profiler('warn', colors, label, args);
-        this.#display(this.#oldWarn, obj);
+    #warn() {
+
+        // Check for profile
+        let prof = '';
+        let diff = 0;
+        let diffString = '';
+        if (this.#profile) {
+            diff = this.#profiler();
+            diffString = this.#calculate_time(diff);
+            prof = COLOR.RESET + COLOR.DIM + COLOR.WHITE + diffString + COLOR.RESET;
+        }
+
+        // Write to session
+
+        // Check if writing to session only.
+        if (!this.#verbose) return;
+
+        // Check type
+        if (arguments.length == 2) {
+
+            // Filter just colorObjects
+            const colors = COLOR.RESET + arguments[0].filter(item => item.name === 'colorObject').join('');
+
+            // Standard
+            this.#oldWarn(colors, ...arguments[1], prof);
+
+        } else {
+
+            // Filter just colorObjects
+            const labelColors = LABEL.RESET + arguments[0].filter(item => item.name === 'labelObject').join('');
+            const colors = COLOR.RESET + arguments[0].filter(item => item.name === 'colorObject').join('');
+
+            // Label + Standard
+            this.#oldWarn(labelColors, ...arguments[1], colors, ...arguments[2], prof);
+        }
+
     }
 
     /** Writes error to console if verbose is true. */
-    #error(colors, label, args) {
-        const obj = this.#profiler('error', colors, label, args);
-        this.#display(this.#oldError, obj);
+    #error() {
+
+        // Check for profile
+        let prof = '';
+        let diff = 0;
+        let diffString = '';
+        if (this.#profile) {
+            diff = this.#profiler();
+            diffString = this.#calculate_time(diff);
+            prof = COLOR.RESET + COLOR.DIM + COLOR.WHITE + diffString + COLOR.RESET;
+        }
+
+        // Write to session
+
+        // Check if writing to session only.
+        if (!this.#verbose) return;
+
+        // Check type
+        if (arguments.length == 2) {
+
+            // Filter just colorObjects
+            const colors = COLOR.RESET + arguments[0].filter(item => item.name === 'colorObject').join('');
+
+            // Standard
+            this.#oldError(colors, ...arguments[1], prof);
+
+        } else {
+
+            // Filter just colorObjects
+            const labelColors = LABEL.RESET + arguments[0].filter(item => item.name === 'labelObject').join('');
+            const colors = COLOR.RESET + arguments[0].filter(item => item.name === 'colorObject').join('');
+
+            // Label + Standard
+            this.#oldError(labelColors, ...arguments[1], colors, ...arguments[2], prof);
+        }
+
+
     }
 
     /** Writes debug to console if verbose is true. */
-    #debug(colors, label, args) {
-        const obj = this.#profiler('debug', colors, label, args);
-        this.#display(this.#oldDebug, obj);
+    #debug() {
+
+        // Check for profile
+        let prof = '';
+        let diff = 0;
+        let diffString = '';
+        if (this.#profile) {
+            diff = this.#profiler();
+            diffString = this.#calculate_time(diff);
+            prof = COLOR.RESET + COLOR.DIM + COLOR.WHITE + diffString + COLOR.RESET;
+        }
+
+        // Write to session
+
+        // Check if writing to session only.
+        if (!this.#verbose) return;
+
+        // Check type
+        if (arguments.length == 2) {
+
+            // Filter just colorObjects
+            const colors = COLOR.RESET + arguments[0].filter(item => item.name === 'colorObject').join('');
+
+            // Standard
+            this.#oldDebug(colors, ...arguments[1], prof);
+
+        } else {
+
+            // Filter just colorObjects
+            const labelColors = LABEL.RESET + arguments[0].filter(item => item.name === 'labelObject').join('');
+            const colors = COLOR.RESET + arguments[0].filter(item => item.name === 'colorObject').join('');
+
+            // Label + Standard
+            this.#oldDebug(labelColors, ...arguments[1], colors, ...arguments[2], prof);
+        }
+
+
     }
 
     /** Writes trace to console if verbose is true. */
-    #trace(colors, label, args) {
-        const obj = this.#profiler('trace', colors, label, args);
-        this.#display(this.#oldTrace, obj);
+    #trace() {
+
+        // Check for profile
+        let prof = '';
+        let diff = 0;
+        let diffString = '';
+        if (this.#profile) {
+            diff = this.#profiler();
+            diffString = this.#calculate_time(diff);
+            prof = COLOR.RESET + COLOR.DIM + COLOR.WHITE + diffString + COLOR.RESET;
+        }
+
+        // Write to session
+
+        // Check if writing to session only.
+        if (!this.#verbose) return;
+
+        // Check type
+        if (arguments.length == 2) {
+
+            // Filter just colorObjects
+            const colors = COLOR.RESET + arguments[0].filter(item => item.name === 'colorObject').join('');
+
+            // Standard
+            this.#oldTrace(colors, ...arguments[1], prof);
+
+        } else {
+
+            // Filter just colorObjects
+            const labelColors = LABEL.RESET + arguments[0].filter(item => item.name === 'labelObject').join('');
+            const colors = COLOR.RESET + arguments[0].filter(item => item.name === 'colorObject').join('');
+
+            // Label + Standard
+            this.#oldTrace(labelColors, ...arguments[1], colors, ...arguments[2], prof);
+        }
+
+
     }
 
 }
