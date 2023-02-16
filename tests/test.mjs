@@ -18,10 +18,6 @@ if (process.argv?.[1].endsWith('test.mjs')) {
         console.log(COLOR.GREEN)('test3');
     });
 
-    test('Curry console.log with forecolor', async (t) => {
-        console.log(COLOR.GREEN)('test3');
-    });
-
     test('Curry console.log with multi color', async (t) => {
         console.log(COLOR.YELLOW, COLOR.BG_GREEN)('test4');
     });
