@@ -268,18 +268,27 @@ export class curryConsole {
 
             // Filter just colorObjects
             const colors = COLOR.RESET + arguments[0].filter(item => item.name === 'colorObject').join('');
+            const args1 = arguments[1].map(item => {
+                return colors + ((typeof item !== 'string') ? JSON.stringify(item) : item) + COLOR.RESET;
+            });
 
             // Standard
-            this.#oldLog(colors, ...arguments[1], prof);
+            this.#oldLog(...args1, prof);
 
         } else {
 
             // Filter just colorObjects
             const labelColors = LABEL.RESET + arguments[0].filter(item => item.name === 'labelObject').join('');
             const colors = COLOR.RESET + arguments[0].filter(item => item.name === 'colorObject').join('');
+            const args1 = arguments[1].map(item => {
+                return labelColors + ((typeof item !== 'string') ? JSON.stringify(item) : item) + LABEL.RESET;
+            });
+            const args2 = arguments[2].map(item => {
+                return colors + ((typeof item !== 'string') ? JSON.stringify(item) : item) + COLOR.RESET
+            });
 
             // Label + Standard
-            this.#oldLog(labelColors, ...arguments[1], colors, ...arguments[2], prof);
+            this.#oldLog(...args1, ...args2, prof);
         }
 
     }
@@ -307,18 +316,27 @@ export class curryConsole {
 
             // Filter just colorObjects
             const colors = COLOR.RESET + arguments[0].filter(item => item.name === 'colorObject').join('');
+            const args1 = arguments[1].map(item => {
+                return colors + ((typeof item !== 'string') ? JSON.stringify(item) : item) + COLOR.RESET;
+            });
 
             // Standard
-            this.#oldInfo(colors, ...arguments[1], prof);
+            this.#oldInfo(...args1, prof);
 
         } else {
 
             // Filter just colorObjects
             const labelColors = LABEL.RESET + arguments[0].filter(item => item.name === 'labelObject').join('');
             const colors = COLOR.RESET + arguments[0].filter(item => item.name === 'colorObject').join('');
+            const args1 = arguments[1].map(item => {
+                return labelColors + ((typeof item !== 'string') ? JSON.stringify(item) : item) + LABEL.RESET;
+            });
+            const args2 = arguments[2].map(item => {
+                return colors + ((typeof item !== 'string') ? JSON.stringify(item) : item) + COLOR.RESET
+            });
 
             // Label + Standard
-            this.#oldInfo(labelColors, ...arguments[1], colors, ...arguments[2], prof);
+            this.#oldInfo(...args1, ...args2, prof);
         }
 
     }
@@ -346,18 +364,27 @@ export class curryConsole {
 
             // Filter just colorObjects
             const colors = COLOR.RESET + arguments[0].filter(item => item.name === 'colorObject').join('');
+            const args1 = arguments[1].map(item => {
+                return colors + ((typeof item !== 'string') ? JSON.stringify(item) : item) + COLOR.RESET;
+            });
 
             // Standard
-            this.#oldWarn(colors, ...arguments[1], prof);
+            this.#oldWarn(...args1, prof);
 
         } else {
 
             // Filter just colorObjects
             const labelColors = LABEL.RESET + arguments[0].filter(item => item.name === 'labelObject').join('');
             const colors = COLOR.RESET + arguments[0].filter(item => item.name === 'colorObject').join('');
+            const args1 = arguments[1].map(item => {
+                return labelColors + ((typeof item !== 'string') ? JSON.stringify(item) : item) + LABEL.RESET;
+            });
+            const args2 = arguments[2].map(item => {
+                return colors + ((typeof item !== 'string') ? JSON.stringify(item) : item) + COLOR.RESET
+            });
 
             // Label + Standard
-            this.#oldWarn(labelColors, ...arguments[1], colors, ...arguments[2], prof);
+            this.#oldWarn(...args1, ...args2, prof);
         }
 
     }
@@ -385,18 +412,27 @@ export class curryConsole {
 
             // Filter just colorObjects
             const colors = COLOR.RESET + arguments[0].filter(item => item.name === 'colorObject').join('');
+            const args1 = arguments[1].map(item => {
+                return colors + ((typeof item !== 'string') ? JSON.stringify(item) : item) + COLOR.RESET;
+            });
 
             // Standard
-            this.#oldError(colors, ...arguments[1], prof);
+            this.#oldError(...args1, prof);
 
         } else {
 
             // Filter just colorObjects
             const labelColors = LABEL.RESET + arguments[0].filter(item => item.name === 'labelObject').join('');
             const colors = COLOR.RESET + arguments[0].filter(item => item.name === 'colorObject').join('');
+            const args1 = arguments[1].map(item => {
+                return labelColors + ((typeof item !== 'string') ? JSON.stringify(item) : item) + LABEL.RESET;
+            });
+            const args2 = arguments[2].map(item => {
+                return colors + ((typeof item !== 'string') ? JSON.stringify(item) : item) + COLOR.RESET
+            });
 
             // Label + Standard
-            this.#oldError(labelColors, ...arguments[1], colors, ...arguments[2], prof);
+            this.#oldError(...args1, ...args2, prof);
         }
 
 
@@ -425,18 +461,27 @@ export class curryConsole {
 
             // Filter just colorObjects
             const colors = COLOR.RESET + arguments[0].filter(item => item.name === 'colorObject').join('');
+            const args1 = arguments[1].map(item => {
+                return colors + ((typeof item !== 'string') ? JSON.stringify(item) : item) + COLOR.RESET;
+            });
 
             // Standard
-            this.#oldDebug(colors, ...arguments[1], prof);
+            this.#oldDebug(...args1, prof);
 
         } else {
 
             // Filter just colorObjects
             const labelColors = LABEL.RESET + arguments[0].filter(item => item.name === 'labelObject').join('');
             const colors = COLOR.RESET + arguments[0].filter(item => item.name === 'colorObject').join('');
+            const args1 = arguments[1].map(item => {
+                return labelColors + ((typeof item !== 'string') ? JSON.stringify(item) : item) + LABEL.RESET;
+            });
+            const args2 = arguments[2].map(item => {
+                return colors + ((typeof item !== 'string') ? JSON.stringify(item) : item) + COLOR.RESET
+            });
 
             // Label + Standard
-            this.#oldDebug(labelColors, ...arguments[1], colors, ...arguments[2], prof);
+            this.#oldDebug(...args1, ...args2, prof);
         }
 
 
@@ -465,18 +510,27 @@ export class curryConsole {
 
             // Filter just colorObjects
             const colors = COLOR.RESET + arguments[0].filter(item => item.name === 'colorObject').join('');
+            const args1 = arguments[1].map(item => {
+                return colors + ((typeof item !== 'string') ? JSON.stringify(item) : item) + COLOR.RESET;
+            });
 
             // Standard
-            this.#oldTrace(colors, ...arguments[1], prof);
+            this.#oldTrace(...args1, prof);
 
         } else {
 
             // Filter just colorObjects
             const labelColors = LABEL.RESET + arguments[0].filter(item => item.name === 'labelObject').join('');
             const colors = COLOR.RESET + arguments[0].filter(item => item.name === 'colorObject').join('');
+            const args1 = arguments[1].map(item => {
+                return labelColors + ((typeof item !== 'string') ? JSON.stringify(item) : item) + LABEL.RESET;
+            });
+            const args2 = arguments[2].map(item => {
+                return colors + ((typeof item !== 'string') ? JSON.stringify(item) : item) + COLOR.RESET
+            });
 
             // Label + Standard
-            this.#oldTrace(labelColors, ...arguments[1], colors, ...arguments[2], prof);
+            this.#oldTrace(...args1, ...args2, prof);
         }
 
 

@@ -18,6 +18,10 @@ if (process.argv?.[1].endsWith('test.mjs')) {
         console.log(COLOR.GREEN)('test3');
     });
 
+    test('Curry console.log with forecolor', async (t) => {
+        console.log(COLOR.GREEN)('test3');
+    });
+
     test('Curry console.log with multi color', async (t) => {
         console.log(COLOR.YELLOW, COLOR.BG_GREEN)('test4');
     });
@@ -50,12 +54,10 @@ if (process.argv?.[1].endsWith('test.mjs')) {
         console.log(LABEL.WHITE, LABEL.BG_RED, COLOR.BG_MAGENTA, COLOR.WHITE)('test10')('testing the message');
     });
 
-
-    /*
     test('Curry console.log with header and background and text color and background and special', async (t) => {
         console.log(LABEL.WHITE, LABEL.BG_RED, COLOR.WHITE, COLOR.UNDERCORE)('test11')('http://example.com', {id: 1}, 12345, [1,2,4,5]);
-    });
-    */
+    });   
+
 
 }
 
