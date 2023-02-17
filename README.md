@@ -20,7 +20,7 @@ console.log(COLOR.GREEN)('CurryConsole Testing');
 ```
 
 #### Output
-[Example1](https://github.com/Codevendor/curry-console/blob/main/assets/example1.png?raw=true)
+![Example1](https://github.com/Codevendor/curry-console/blob/main/assets/example1.png?raw=true)
 
 
 If you are new to **currying** in **JavaScript**, the syntax may look strange above. Basically currying, allows you to add parenthesis to groups of parameters passed to nested return functions. If you would like to learn more about how to curry in **JavaScript**, here is a simple tutorial [JavaScript Currying](https://www.w3docs.com/learn-javascript/currying.html).
