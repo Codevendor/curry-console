@@ -1,7 +1,7 @@
 'use strict';
 
 // Imports
-import { colorObject } from "./color-object.mjs";
+import { colorObject } from "./color-object.js";
 
 /**
  * Custom color objects.
@@ -19,13 +19,17 @@ export const COLOR = {
 
     DEFAULT: new colorObject("DEFAULT", ""),
     RESET: new colorObject("RESET", "\x1b[0m"),
-    BRIGHT: new colorObject("BRIGHT", "\x1b[1m"),
+    BOLD: new colorObject("BOLD", "\x1b[1m"),
     DIM: new colorObject("DIM", "\x1b[2m"),
-    UNDERCORE: new colorObject("UNDERSCORE", "\x1b[4m"),
+    UNDERLINE: new colorObject("UNDERLINE", "\x1b[4m"),
     BLINK: new colorObject("BLINK", "\x1b[5m"),
     REVERSE: new colorObject("REVERSE", "\x1b[7m"),
     HIDDEN: new colorObject("HIDDEN", "\x1b[8m"),
+    STRIKE: new colorObject("STRIKE", "\x1b[9m"),
+    OUTLINE: new colorObject("OUTLINE", "\x1b[53m"),
     RAINBOW: new colorObject("RAINBOW", ""),
+    CAPS: new colorObject("CAPS", ""),
+    CAPFIRST: new colorObject("CAPFIRST", ""),
 
     FG_BLACK: new colorObject("FG_BLACK", "\x1b[30m"),
     FG_RED: new colorObject("FG_RED", "\x1b[31m"),

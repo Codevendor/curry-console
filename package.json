@@ -2,22 +2,43 @@
   "name": "curry-console",
   "version": "0.0.1",
   "description": "Adds color features to console, without changing standard functionality.",
-  "main": "index.mjs",
   "type": "module",
+  "exports": {
+    ".": "./src/index.js"
+  },
   "scripts": {
-    "test": "node tests/test1.mjs"
+    "test": "node ./tests/test.js"
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/Codevendor/curry-console.git"
   },
   "keywords": [
-    "console",
     "curry",
     "curry console",
     "curry-console",
+    "console",
+    "terminal",
+    "color",
+    "colour",
+    "colors",
     "color console",
-    "console.log"
+    "log",
+    "logging",
+    "console.log",
+    "text",
+    "cli",
+    "string",
+    "ansi",
+    "style",
+    "styles",
+    "tty",
+    "formatting",
+    "rgb",
+    "256",
+    "shell",
+    "xterm",
+    "command-line"
   ],
   "author": {
     "name": "Adam Smith",

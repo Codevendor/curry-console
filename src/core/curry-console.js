@@ -1,9 +1,9 @@
 'use strict';
 
 // Imports
-import { curryEventEmitter } from "./event-emitter.mjs";
-import { COLOR } from "./color.mjs";
-import { LABEL } from "./label.mjs";
+import { curryEventEmitter } from "./event-emitter.js";
+import { COLOR } from "./color.js";
+import { LABEL } from "./label.js";
 
 /**
  * Adds color features to console, without changing standard functionality.

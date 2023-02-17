@@ -1,21 +1,22 @@
 // Imports
 import test from "node:test";
 import process from 'node:process';
-import { curryConsole, COLOR, LABEL } from "../index.mjs";
+import { curryConsole, COLOR, LABEL } from "../src/index.js";
 
-const curr = new curryConsole(true);
+//const curr = new curryConsole(true);
+const curr = new curryConsole(false);
 curr.record = true;
-curr.defaultLog = [COLOR.WHITE, COLOR.BRIGHT];
-curr.defaultLogLabel = [LABEL.WHITE, LABEL.BG_GREEN, LABEL.BRIGHT];
+curr.defaultLog = [COLOR.WHITE, COLOR.BOLD];
+curr.defaultLogLabel = [LABEL.WHITE, LABEL.BG_GREEN, LABEL.BOLD];
 
-if (process.argv?.[1].endsWith('test.mjs')) {
+if (process.argv?.[1].endsWith('test.js')) {
 
     test('Event Emitter', async (t) => {
 
         curr.on('log', (data) => {
 
             process.stdout.write(`Event Emitted for ${data.type}\n`);
-        
+
         });
     });
 
@@ -29,7 +30,7 @@ if (process.argv?.[1].endsWith('test.mjs')) {
 
     test('Curry console.log with forecolor', async (t) => {
         console.log(COLOR.GREEN)('This should be a console.log(COLOR.GREEN)(msg)');
-    });    
+    });
 
     test('Curry console.log with multi color', async (t) => {
         console.log(COLOR.BG_WHITE, COLOR.BLACK)('This should be a multi color console.log(COLOR.BG_WHITE, COLOR.BLACK)(msg)');
@@ -64,31 +65,32 @@ if (process.argv?.[1].endsWith('test.mjs')) {
     });
 
     test('Curry console.log with header and background and text color and background and special', async (t) => {
-        console.log(LABEL.WHITE, LABEL.BG_RED, COLOR.WHITE, COLOR.UNDERCORE)('TEST11')('This should be a red label with white text and white underlined text console.log(LABEL.WHITE, LABEL.BG_RED, COLOR.WHITE, COLOR.UNDERCORE)(label)(msg)', 'http://example.com');
-    }); 
-    
+        console.log(LABEL.WHITE, LABEL.BG_RED, COLOR.WHITE, COLOR.UNDERLINE)('TEST11')('This should be a red label with white text and white underlined text console.log(LABEL.WHITE, LABEL.BG_RED, COLOR.WHITE, COLOR.UNDERCORE)(label)(msg)', 'http://example.com');
+    });
+
     test('Curry console.log check for default color', async (t) => {
-        console.log(LABEL.WHITE, LABEL.BG_BLUE, COLOR.BLUE)('TEST12')('Testing other types converted with JSON.stringify', {id: 1}, 12345, [1,2,4,5]);
-    }); 
+        console.log(LABEL.WHITE, LABEL.BG_BLUE, COLOR.BLUE)('TEST12')('Testing other types converted with JSON.stringify', { id: 1 }, 12345, [1, 2, 4, 5]);
+    });
 
     test('Curry console.log check for label default color', async (t) => {
-        
+
         console.log(LABEL.DEFAULT)('TEST13')(`These should be default colors set for defaultLog and defaultLogLabel. console.log(LABEL.DEFAULT)('TEST13')(msg)`);
 
-    }); 
+    });
 
     test('Color Test', async (t) => {
 
-        console.log(COLOR.RAINBOW)('This is a rainbow colored text.', 12345, {id:"hey"});
+        console.log(COLOR.RAINBOW)('This is a rainbow colored text.', 12345, { id: "hey" });
 
     });
 
     test('Check if history', async (t) => {
-         console.log('The current history...', curr.history);
-    });  
-    
+        console.log('The current history...', curr.history);
+    });
 
 }
+
+
 
 
 

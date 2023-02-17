@@ -1,6 +1,6 @@
 'use strict';
 
-import { curryObject } from "./curry-object.mjs";
+import { curryObject } from "./curry-object.js";
 
 /**
  * For creating a labelObject.

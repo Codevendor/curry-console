@@ -1,7 +1,7 @@
 'use strict';
 
 // Imports
-import { labelObject } from "./label-object.mjs";
+import { labelObject } from "./label-object.js";
 
 /**
  * Custom color objects.
@@ -19,12 +19,17 @@ export const LABEL = {
 
     DEFAULT: new labelObject("DEFAULT", ""),
     RESET: new labelObject("RESET", "\x1b[0m"),
-    BRIGHT: new labelObject("BRIGHT", "\x1b[1m"),
+    BOLD: new labelObject("BOLD", "\x1b[1m"),
     DIM: new labelObject("DIM", "\x1b[2m"),
-    UNDERCORE: new labelObject("UNDERSCORE", "\x1b[4m"),
+    UNDERLINE: new labelObject("UNDERLINE", "\x1b[4m"),
     BLINK: new labelObject("BLINK", "\x1b[5m"),
     REVERSE: new labelObject("REVERSE", "\x1b[7m"),
     HIDDEN: new labelObject("HIDDEN", "\x1b[8m"),
+    STRIKE: new labelObject("STRIKE", "\x1b[9m"),
+    OUTLINE: new labelObject("OUTLINE", "\x1b[53m"),
+    RAINBOW: new labelObject("RAINBOW", ""),
+    CAPS: new labelObject("CAPS", ""),
+    CAPFIRST: new labelObject("CAPFIRST", ""),
 
     FG_BLACK: new labelObject("FG_BLACK", "\x1b[30m"),
     FG_RED: new labelObject("FG_RED", "\x1b[31m"),
