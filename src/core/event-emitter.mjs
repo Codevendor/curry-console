@@ -48,9 +48,7 @@ export class curryEventEmitter {
      */
     emit(name, data) {
 
-        if (!this.#events.hasOwnProperty(name)) {
-            throw new Error(`Can't emit an event. Event "${name}" doesn't exits.`);
-        }
+        if (!this.#events.hasOwnProperty(name)) return;
 
         const emitEvents = (method) => {
             method(data);
