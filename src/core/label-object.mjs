@@ -1,40 +1,21 @@
 'use strict';
 
+import { curryObject } from "./curry-object.mjs";
+
 /**
- * For creating a colorObject.
+ * For creating a labelObject.
  */
-export class labelObject {
-
-    // Private Fields
-    #color = '';
-
-    /** Gets the color string. */
-    get color() { return this.#color; }
-
-    /** Returns a static type. */
-    get type() { return 'curryConsoleType'; }
-
-    /**
-     * Sets the color string.
-     * @param {string} value - The color as a string.
-     */
-    set color(value) { this.#color = this.#color; }
-
-    /** Get the name of the class. */
-    get name() { return this.constructor.name; }
+export class labelObject extends curryObject {
 
     /**
      * The constructor for the labelObject.
-     * @param {string} color - The color as a string.
+     * @param {string} key - The key to set.
+     * @param {string} value - The value to set.
      */
-    constructor(color = '') {
+    constructor(key, value) {
 
-        this.#color = color;
+        super(key, value);
 
     }
 
-    /** Writes the color as a string. */
-    toString() {
-        return this.#color;
-    }
 }
