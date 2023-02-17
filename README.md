@@ -37,6 +37,17 @@ The above example adds two color types to the text. Sets the background color to
 #### Output:
 ![Example2](https://github.com/Codevendor/curry-console/blob/main/assets/example2.png?raw=true)
 
+#### Color Effects Example:
+```js
+// Color Effects Test
+console.log(COLOR.RED, COLOR.BLINK)('CurryConsole Testing');
+```
+
+You can also add color effects to your text. In the above example we set the text color to [COLOR.RED]() and the effect to [COLOR.BLINK](). This causes the text to blink on and off.
+
+#### Output:
+![Example2](https://github.com/Codevendor/curry-console/blob/main/assets/example3.gif?raw=true)
+
 
 
 
