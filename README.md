@@ -257,7 +257,9 @@ The parameter [data]() will return and object containing all the information abo
 <!-- CHANGELOG -->
 ## Change Log
 
-- [[ Feb, 17, 2023 ]()] - Created repo and npm module and esmodule [curry-console]() version 0.0.1.
+- [[ Feb 18,  2023 ]()] - Updated code with fixes. Created examples in readme and changed version to 0.0.2 
+
+- [[ Feb 17, 2023 ]()] - Created repo and npm module and esmodule [curry-console]() version 0.0.1.
 
 See the [open issues](https://github.com/Codevendor/curry-console/issues) for a full list of proposed features (and known issues).
 
