@@ -44,6 +44,44 @@ If you are new to **currying** in **JavaScript**, the syntax may look strange ab
 
 Normally you would expect the second version to error, but [**CurryConsole**]() extends it through currying. The const param [COLOR.GREEN]() changes the color of the log message to green. So simple, but yet so powerfull. 
 
+### Text Colors
+| Constant | Decription |
+| :-- | :-- |
+| [COLOR.BLACK]()    | Renders the text color black.    |
+| [COLOR.RED]() | Renders the text color red. |
+| [COLOR.GREEN]() | Renders the text color green. |
+| [COLOR.YELLOW]() | Renders the text color yellow. | 
+| [COLOR.BLUE]() | Renders the text color blue. |
+| [COLOR.MAGENTA]() | Renders the text color magenta. |
+| [COLOR.CYAN]() | Renders the text color cyan. |
+| [COLOR.WHITE]() | Renders the text color white. |
+
+### Foreground Text Colors: [Alternative to List Above]()
+| Constant | Decription |
+| :-- | :-- |
+| [COLOR.FG_BLACK]()    | Renders the text foreground color black.    |
+| [COLOR.FG_RED]() | Renders the text foreground color red. |
+| [COLOR.FG_GREEN]() | Renders the text foreground color green. |
+| [COLOR.FG_YELLOW]() | Renders the text foregroundcolor yellow. | 
+| [COLOR.FG_BLUE]() | Renders the text foreground color blue. |
+| [COLOR.FG_MAGENTA]() | Renders the text foreground color magenta. |
+| [COLOR.FG_CYAN]() | Renders the text foreground color cyan. |
+| [COLOR.FG_WHITE]() | Renders the text foreground color white. |
+
+### Background Text Colors
+| Constant | Decription |
+| :-- | :-- |
+| [COLOR.BG_BLACK]()    | Renders the text background color black.    |
+| [COLOR.BG_RED]() | Renders the text background color red. |
+| [COLOR.BG_GREEN]() | Renders the text background color green. |
+| [COLOR.BG_YELLOW]() | Renders the text background color yellow. | 
+| [COLOR.BG_BLUE]() | Renders the text background color blue. |
+| [COLOR.BG_MAGENTA]() | Renders the text background color magenta. |
+| [COLOR.BG_CYAN]() | Renders the text background color cyan. |
+| [COLOR.BG_WHITE]() | Renders the text background color white. |
+
+
+
 ### Multi Coloring Example:
 ```js
 // Multi Color Test
@@ -65,6 +103,26 @@ You can also add color effects to your text. In the above example we set the tex
 
 #### Output:
 ![Example3](https://github.com/Codevendor/curry-console/blob/main/assets/example3.gif?raw=true)
+
+
+### Color Effects
+| Constant | Decription |
+| :-- | :-- |
+| [COLOR.DEFAULT]()    | Renders the text with the default settings.    |
+| [COLOR.RESET]() | Clears the color code previously used. |
+| [COLOR.BOLD]() | Makes the text bold. |
+| [COLOR.DIM]() | Makes the text color dimmed. | 
+| [COLOR.ITALIC]() | Makes the text italic. |
+| [COLOR.UNDERLINE]() | Makes the text underlined.. |
+| [COLOR.BLINK]() | Makes the text blink. |
+| [COLOR.REVERSE]() | Renders the text in reverse. |
+| [COLOR.HIDDEN]() | The text is hidden. |
+| [COLOR.STRIKE]() | Makes the text have a strike thru it. |
+| [COLOR.OUTLINE]() | Renders the text outlined. |
+| [COLOR.RAINBOW]() | Renders the text rainbowed. |
+| [COLOR.CAPS]() | Renders the text all capitalized. |
+| [COLOR.CAPFIRST]() | Renders the char of the first word capitalized. |
+| More to come ... | Under Development |
 
 ### Label Example:
 
@@ -129,7 +187,7 @@ console.log(LABEL.WHITE, LABEL.BG_BLUE, COLOR.WHITE)('MY-LABEL')('This is a test
 
 ### Special Rainbow Color
 
-There is a special rainbow color that can be set with [COLOR.RAINBOW], that renders colors per each character of the log message.
+There is a special rainbow color that can be set with [COLOR.RAINBOW](), that renders colors per each character of the log message.
 ```js
 console.log(COLOR.RAINBOW)("This is a rainbow colored message.")
 ```
