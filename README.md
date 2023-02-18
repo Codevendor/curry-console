@@ -68,9 +68,9 @@ You can also add color effects to your text. In the above example we set the tex
 
 ### Label Example:
 
-Label tags are an awesome feature for identifying what process created the log message. You are free to use the label for anything you want. To use labels, you need to add a LABEL constant to your curry. 
+**Label tags** are an awesome feature for identifying what process created the log message. You are free to use the label for anything you want. To use labels, you need to add a [LABEL]() constant to your curry. You can color the label and text anyway you want.
 
-**Format**: console.log([COLOR|LABEL|FEATURE]())("LABEL-STRING")("MSG")
+**Format**: console.log ( [COLOR | LABEL | FEATURE]() )( "[LABEL-STRING]()" )( "[MSG]()" )
 
 ```js
 console.log(LABEL.BG_BLUE, LABEL.WHITE, COLOR.WHITE)('MY-LABEL')('CurryConsole Testing');
@@ -79,7 +79,40 @@ console.log(LABEL.BG_BLUE, LABEL.WHITE, COLOR.WHITE)('MY-LABEL')('CurryConsole T
 #### Output:
 ![Example4](https://github.com/Codevendor/curry-console/blob/main/assets/example4.png?raw=true)
 
+### Simple Profiler
 
+With the [curry-console]() class, you have the option to turn on **profiler** mode. By setting class **property** ([profile]() = true | constructor setting), you can enable profiling of length between [console.log()]() messages.
+
+```js
+// Set through property
+import { curryConsole, COLOR, LABEL } from "curry-console";
+const curr = new curryConsole();
+curr.profile = true;
+
+// or
+
+// Set through constructor
+import { curryConsole, COLOR, LABEL } from "curry-console";
+const curr = new curryConsole(true);
+```
+
+The settings above will enable profiler mode and output dimmed text at end of log message with a time difference of calls. This can be used to calculate long running processes or loops. Running the last code again will display new info.
+```js
+console.log(LABEL.BG_BLUE, LABEL.WHITE, COLOR.WHITE)('MY-LABEL')('CurryConsole Testing');
+```
+
+#### Output:
+![Example5](https://github.com/Codevendor/curry-console/blob/main/assets/example5.png?raw=true)
+
+#### Loop Example
+```js
+for (let i = 0; i < 5; i++) {
+    console.log(LABEL.BG_BLUE, LABEL.WHITE, COLOR.WHITE)('MY-LABEL')(`CurryConsole Testing message index: ${i}`);
+}
+```
+
+#### Output:
+![Example6](https://github.com/Codevendor/curry-console/blob/main/assets/example5.png?raw=true)
 
 
 
