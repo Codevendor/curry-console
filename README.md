@@ -112,7 +112,7 @@ for (let i = 0; i < 5; i++) {
 ```
 
 #### Output:
-![Example6](https://github.com/Codevendor/curry-console/blob/main/assets/example5.png?raw=true)
+![Example6](https://github.com/Codevendor/curry-console/blob/main/assets/example6.png?raw=true)
 
 
 
