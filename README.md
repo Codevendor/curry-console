@@ -115,6 +115,17 @@ for (let i = 0; i < 5; i++) {
 ![Example6](https://github.com/Codevendor/curry-console/blob/main/assets/example6.png?raw=true)
 
 
+### Logging Alternative JavaScript Types
+
+All **parameters** passed into [curry-console]() are ran through [JSON.stringify()]() before being rendered with color and features. Below is an example of what passing in a [string](), [number](), [array]() and [object]() will look like.
+```js
+
+console.log(LABEL.WHITE, LABEL.BG_BLUE, COLOR.WHITE)('MY-LABEL')('This is a test.', 12345, [1, 2, 4, 5], { id: 1 });
+```
+
+#### Output
+![Example7](https://github.com/Codevendor/curry-console/blob/main/assets/example7.png?raw=true)
+
 
 
 
