@@ -21,6 +21,7 @@ export const COLOR = {
     RESET: new colorObject("RESET", "\x1b[0m"),
     BOLD: new colorObject("BOLD", "\x1b[1m"),
     DIM: new colorObject("DIM", "\x1b[2m"),
+    ITALIC: new colorObject("DIM", "\x1b[3m"),
     UNDERLINE: new colorObject("UNDERLINE", "\x1b[4m"),
     BLINK: new colorObject("BLINK", "\x1b[5m"),
     REVERSE: new colorObject("REVERSE", "\x1b[7m"),

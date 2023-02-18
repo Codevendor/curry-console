@@ -127,6 +127,16 @@ console.log(LABEL.WHITE, LABEL.BG_BLUE, COLOR.WHITE)('MY-LABEL')('This is a test
 ![Example7](https://github.com/Codevendor/curry-console/blob/main/assets/example7.png?raw=true)
 
 
+### Special Rainbow Color
+
+There is a special rainbow color that can be set with [COLOR.RAINBOW], that renders colors per each character of the log message.
+```js
+console.log(COLOR.RAINBOW)("This is a rainbow colored message.")
+```
+
+#### Output
+![Example8](https://github.com/Codevendor/curry-console/blob/main/assets/example8.png?raw=true)
+
 
 
 <!-- ROADMAP -->

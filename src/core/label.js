@@ -21,6 +21,7 @@ export const LABEL = {
     RESET: new labelObject("RESET", "\x1b[0m"),
     BOLD: new labelObject("BOLD", "\x1b[1m"),
     DIM: new labelObject("DIM", "\x1b[2m"),
+    ITALIC: new labelObject("DIM", "\x1b[3m"),
     UNDERLINE: new labelObject("UNDERLINE", "\x1b[4m"),
     BLINK: new labelObject("BLINK", "\x1b[5m"),
     REVERSE: new labelObject("REVERSE", "\x1b[7m"),
