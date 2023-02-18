@@ -202,7 +202,7 @@ export class curryConsole extends curryEventEmitter {
             }
 
             // Emit Event
-            self.emit('log', { type: 'console.log()', params: a });
+            self.emit('message', { type: 'console.log()', params: a });
 
             // Write to standard console.log
             self.#standardLog(...a);
@@ -232,7 +232,7 @@ export class curryConsole extends curryEventEmitter {
             }
 
             // Emit Event
-            self.emit('info', { type: 'console.info()', params: a });
+            self.emit('message', { type: 'console.info()', params: a });
 
             // Write to standard console.info
             self.#standardInfo(...a);
@@ -262,7 +262,7 @@ export class curryConsole extends curryEventEmitter {
             }
 
             // Emit Event
-            self.emit('warn', { type: 'console.warn()', params: a });
+            self.emit('message', { type: 'console.warn()', params: a });
 
             // Write to standard console.warn
             self.#standardWarn(...a);
@@ -291,7 +291,7 @@ export class curryConsole extends curryEventEmitter {
             }
 
             // Emit Event
-            self.emit('error', { type: 'console.error()', params: a });
+            self.emit('message', { type: 'console.error()', params: a });
 
             // Write to standard console.error
             self.#standardError(...a);
@@ -469,7 +469,7 @@ export class curryConsole extends curryEventEmitter {
         }
 
         // Emit event
-        this.emit('log', { type: 'curryConsole.log()', params: historyItem });
+        this.emit('message', { type: 'curryConsole.log()', params: historyItem });
 
         // Check if writing to history only.
         if (!this.#verbose) return;
@@ -569,7 +569,7 @@ export class curryConsole extends curryEventEmitter {
         }
 
         // Emit event
-        this.emit('info', { type: 'curryConsole.info()', params: historyItem });
+        this.emit('message', { type: 'curryConsole.info()', params: historyItem });
 
         // Check if writing to history only.
         if (!this.#verbose) return;
@@ -669,7 +669,7 @@ export class curryConsole extends curryEventEmitter {
         }
 
         // Emit event
-        this.emit('warn', { type: 'curryConsole.warn()', params: historyItem });
+        this.emit('message', { type: 'curryConsole.warn()', params: historyItem });
 
         // Check if writing to history only.
         if (!this.#verbose) return;
@@ -768,7 +768,7 @@ export class curryConsole extends curryEventEmitter {
         }
 
         // Emit event
-        this.emit('error', { type: 'curryConsole.error()', params: historyItem });
+        this.emit('message', { type: 'curryConsole.error()', params: historyItem });
 
         // Check if writing to history only.
         if (!this.#verbose) return;

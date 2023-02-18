@@ -137,7 +137,7 @@ console.log(LABEL.BG_BLUE, LABEL.WHITE, COLOR.WHITE)('MY-LABEL')('CurryConsole T
 #### Output:
 ![Example4](https://github.com/Codevendor/curry-console/blob/main/assets/example4.png?raw=true)
 
-### Simple Profiler
+### Simple Profiler - Default: [false]()
 
 With the [curry-console]() class, you have the option to turn on **profiler** mode. By setting class **property** ([profile]() = true | constructor setting), you can enable profiling of length between [console.log()]() messages.
 
@@ -195,11 +195,61 @@ console.log(COLOR.RAINBOW)("This is a rainbow colored message.")
 #### Output
 ![Example8](https://github.com/Codevendor/curry-console/blob/main/assets/example8.png?raw=true)
 
+### Verbose Mode - Default: [true]()
+
+If you would like to stop all messages sent through console from displaying in the terminal, you can set the verbose mode to [false]().
+This feature can be used for **production** or **development** modes to show only specific messages foreach. This mode can be used in combination with history to record messages, but don't show them.
+```js 
+// Set thru constructor
+import { curryConsole, COLOR, LABEL } from "curry-console";
+const curr = new curryConsole(true, true);
+
+// or 
+
+// Set thru property.
+import { curryConsole, COLOR, LABEL } from "curry-console";
+const curr = new curryConsole();
+curr.verbose = true;
+```
+
+### Record Mode - Default: [false]()
+
+If you would like to record a history of all messages logged inside an internal array of objects, set the record mode to [true](). The objects in the array will contain extra information about each log call, like colors/effects, profiler, etc. 
+```js
+// Set thru constructor
+import { curryConsole, COLOR, LABEL } from "curry-console";
+const curr = new curryConsole(true, true, true);
+
+// or 
+
+// Set thru property.
+import { curryConsole, COLOR, LABEL } from "curry-console";
+const curr = new curryConsole();
+curr.record = true;
+```
+You can access the history array with the property ([history]()). You will need to write your own code for managing the array from getting too full. There is a public method [reset()](), that can be used to clear the history array and reset it.  
+
+### Log Event Emitter
+
+The [curry-console]() comes with a custom [event emitter](). The events fire per each time the console.log is called. You can attach a custom **listener** callback method to wait for the **event**. This feature allows for creating custom log files, separated by log method type ([log](), [info](), [warn](), [error]()) or custom [labels](). Use your imagination for creating anything you want. **:)** 
+
+**WARNING:** **MAKE SURE NOT TO INCLUDE** [console.log]() inside listen event callback, as this could cause an **infinite loop**. You can substitute [process.stdout.write]() intead.
+
+#### Subscribe to Listen Event:
+```js
+curr.on('message', (data) => {
+
+    process.stdout.write(`Event Emitted for ${data.type}\n`);
+
+});
+```
+
+The parameter [data]() will return and object containing all the information about the **message**, **parameters**, **labels**, **colors**, **effects**, **profiler**, etc.
 
 
 <!-- ROADMAP -->
 ## Roadmap
-- [[ Future ]()] - **TODO**: Create a browser version.
+- [[ Future ]()] - **TODO**: Create a browser version. New Color effects. 256-bit color and hex/rgba formats for supported terminals. 
 - [[ Feb 17, 2023 ]()] - Under Development and Testing
 
 
