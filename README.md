@@ -45,7 +45,7 @@ If you are new to **currying** in **JavaScript**, the syntax may look strange ab
 Normally you would expect the second version to error, but [**CurryConsole**]() extends it through currying. The const param [COLOR.GREEN]() changes the color of the log message to green. So simple, but yet so powerfull. 
 
 ### Text Colors
-| Constant | Decription |
+| Constant | Description |
 | :-- | :-- |
 | [COLOR.BLACK]()    | Renders the text color black.    |
 | [COLOR.RED]() | Renders the text color red. |
@@ -57,7 +57,7 @@ Normally you would expect the second version to error, but [**CurryConsole**]() 
 | [COLOR.WHITE]() | Renders the text color white. |
 
 ### Foreground Text Colors: [Alternative to List Above]()
-| Constant | Decription |
+| Constant | Description |
 | :-- | :-- |
 | [COLOR.FG_BLACK]()    | Renders the text foreground color black.    |
 | [COLOR.FG_RED]() | Renders the text foreground color red. |
@@ -69,7 +69,7 @@ Normally you would expect the second version to error, but [**CurryConsole**]() 
 | [COLOR.FG_WHITE]() | Renders the text foreground color white. |
 
 ### Background Text Colors
-| Constant | Decription |
+| Constant | Description |
 | :-- | :-- |
 | [COLOR.BG_BLACK]()    | Renders the text background color black.    |
 | [COLOR.BG_RED]() | Renders the text background color red. |
@@ -106,7 +106,7 @@ You can also add color effects to your text. In the above example we set the tex
 
 
 ### Color Effects
-| Constant | Decription |
+| Constant | Description |
 | :-- | :-- |
 | [COLOR.DEFAULT]()    | Renders the text with the default settings.    |
 | [COLOR.RESET]() | Clears the color code previously used. |
