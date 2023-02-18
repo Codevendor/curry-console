@@ -4,7 +4,7 @@ import process from 'node:process';
 import { curryConsole, COLOR, LABEL } from "../src/index.js";
 
 //const curr = new curryConsole(true);
-const curr = new curryConsole(false);
+const curr = new curryConsole(true);
 curr.record = true;
 curr.defaultLog = [COLOR.WHITE, COLOR.BOLD];
 curr.defaultLogLabel = [LABEL.WHITE, LABEL.BG_GREEN, LABEL.BOLD];
@@ -13,7 +13,7 @@ if (process.argv?.[1].endsWith('test.js')) {
 
     test('Event Emitter', async (t) => {
 
-        curr.on('log', (data) => {
+        curr.on('message', (data) => {
 
             process.stdout.write(`Event Emitted for ${data.type}\n`);
 
@@ -73,15 +73,11 @@ if (process.argv?.[1].endsWith('test.js')) {
     });
 
     test('Curry console.log check for label default color', async (t) => {
-
         console.log(LABEL.DEFAULT)('TEST13')(`These should be default colors set for defaultLog and defaultLogLabel. console.log(LABEL.DEFAULT)('TEST13')(msg)`);
-
     });
 
     test('Color Test', async (t) => {
-
         console.log(COLOR.RAINBOW)('This is a rainbow colored text.', 12345, { id: "hey" });
-
     });
 
     test('Check if history', async (t) => {
