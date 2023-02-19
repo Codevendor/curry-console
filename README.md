@@ -333,7 +333,7 @@ The parameter [data]() will return and object containing all the information abo
 <!-- CHANGELOG -->
 ## Change Log
 
-- [[ Feb 19, 2023 ]()] - More fixes. Adding actions to version 0.0.3
+- [[ Feb 19, 2023 ]()] - More fixes. Added defaults and global definition to readme. Adding actions to version 0.0.3
 
 - [[ Feb 18,  2023 ]()] - Updated code with fixes. Created examples in readme and changed version to 0.0.2 
 
