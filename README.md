@@ -229,6 +229,35 @@ curr.record = true;
 ```
 You can access the history array with the property ([history]()). You will need to write your own code for managing the array from getting too full. There is a public method [reset()](), that can be used to clear the history array and reset it.  
 
+### Actions - [Coming soon...]()
+
+Building actions into [curry-console](), that can create special features to the console. Below is a list of [actions]().
+
+### Action Features
+| Constant | Description |
+| :-- | :-- |
+| [ACTION.CALL(function, args)]()    | Allows you to call a method.    |
+| [ACTION.DATETIME(boolean or string)]() | Displays a date time stamp. |
+| [ACTION.DEBUG(boolean)]() | Enables or disables DEBUG mode per message. |
+| [ACTION.DELAY(milliseconds)]() | Delays in milliseconds the message from writing to terminal. |
+| [ACTION.EMIT(boolean)]() | Enables or disables EMIT mode per message. | 
+| [ACTION.ID(string)]() | Allows for creating a unique id for the message. |
+| [ACTION.PROFILE(boolean)]() | Enables or disables Profile mode per message. |
+| [ACTION.PROGRESSBAR(min, max, value)]() | Creates a progress bar in the console. |
+| [ACTION.RECORD(boolean)]() | Enables or disables Record mode per messages. |
+| [ACTION.SPINNER()]() | Creates a loading spinner in the console. |
+| [ACTION.VERBOSE(boolean)]() | Enables or disables verbose mode per message. |
+| More to come ... | Under Development |
+
+#### Action Usage Example:
+```js
+console.log(LABEL.BG_BLUE, LABEL.WHITE, COLOR.WHITE, ACTION.DEBUG(true))('NODEJS')('testing');
+```
+#### Output
+![Example9](https://github.com/Codevendor/curry-console/blob/main/assets/example9.png?raw=true)
+
+We turned on debugging for this single message with [ACTION.DEBUG(true)]() which outputed the **filepath**, **line** and **column** number. 
+
 ### Log Event Emitter
 
 The [curry-console]() comes with a custom [event emitter](). The events fire per each time the console.log is called. You can attach a custom **listener** callback method to wait for the **event**. This feature allows for creating custom log files, separated by log method type ([log](), [info](), [warn](), [error]()) or custom [labels](). Use your imagination for creating anything you want. **:)** 
@@ -256,6 +285,8 @@ The parameter [data]() will return and object containing all the information abo
 
 <!-- CHANGELOG -->
 ## Change Log
+
+- [[ Feb 19, 2023 ]()] - More fixes. Adding actions to version 0.0.3
 
 - [[ Feb 18,  2023 ]()] - Updated code with fixes. Created examples in readme and changed version to 0.0.2 
 
