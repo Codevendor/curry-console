@@ -128,18 +128,48 @@ You can also add color effects to your text. In the above example we set the tex
 
 **Label tags** are an awesome feature for identifying what process created the log message. You are free to use the label for anything you want. To use labels, you need to add a [LABEL]() constant to your curry. You can color the label and text anyway you want.
 
-**Format**: console.log ( [curryConsoleTypes]() )( "[LABEL-STRING]()" )( "[MSG]()" )
+**Native Format**: 
+```js
+console.log("any");
+```
 
-#### curryConsoleTypes - [COLOR]() | [LABEL]() | [ACTION()]()
+**CurryConsole Format**:
+```js
+console.log ( curryConsoleTypes )( "Optional: LABEL-NAME" )( "any" );
+```
+
+#### curryConsoleTypes = [COLOR]() | [LABEL]() | [ACTION()]()
 
 ```js
-console.log(LABEL.BG_BLUE, LABEL.WHITE, COLOR.WHITE)('MY-LABEL')('CurryConsole Testing');
+console.log(LABEL.BG_BLUE, ACTION.VERBOSE(true), COLOR.WHITE)('MY-LABEL')('CurryConsole Testing');
 ```
 
 #### Output:
 ![Example4](https://github.com/Codevendor/curry-console/blob/main/assets/example4.png?raw=true)
 
-### Simple Profiler - Default: [false]()
+### Logging Alternative JavaScript Types
+
+All **parameters** passed into [curry-console]() are ran through [JSON.stringify()]() before being rendered with color and features. Below is an example of what passing in a [string](), [number](), [array]() and [object]() will look like.
+```js
+
+console.log(LABEL.WHITE, LABEL.BG_BLUE, COLOR.WHITE)('MY-LABEL')('This is a test.', 12345, [1, 2, 4, 5], { id: 1 });
+```
+
+#### Output
+![Example7](https://github.com/Codevendor/curry-console/blob/main/assets/example7.png?raw=true)
+
+
+### Special Rainbow Color
+
+There is a special rainbow color that can be set with [COLOR.RAINBOW](), that renders colors per each character of the log message.
+```js
+console.log(COLOR.RAINBOW)("This is a rainbow colored message.")
+```
+
+#### Output
+![Example8](https://github.com/Codevendor/curry-console/blob/main/assets/example8.png?raw=true)
+
+### Global: Simple Profiler - Default: [false]()
 
 With the [curry-console]() class, you have the option to turn on **profiler** mode. By setting class **property** ([profile]() = true | constructor setting), you can enable profiling of length between [console.log()]() messages.
 
@@ -174,30 +204,40 @@ for (let i = 0; i < 5; i++) {
 #### Output:
 ![Example6](https://github.com/Codevendor/curry-console/blob/main/assets/example6.png?raw=true)
 
+### Globals and Defaults for [curry-console]()
 
-### Logging Alternative JavaScript Types
+The module contains [globals]() through constructor intialization or class properties. All globals can be turn [off]() or [on]() per message, using [ACTION](). You can also specify global default **text colors**, **label colors** and even **actions** per console method [console.log()](), [console.info()](), [console.warn()]() and [console.error()]().
 
-All **parameters** passed into [curry-console]() are ran through [JSON.stringify()]() before being rendered with color and features. Below is an example of what passing in a [string](), [number](), [array]() and [object]() will look like.
+#### Example Global Definition:
 ```js
+// Constructor Definition for modes
+constructor(profile = false, verbose = true, record = false, debug = false)
 
-console.log(LABEL.WHITE, LABEL.BG_BLUE, COLOR.WHITE)('MY-LABEL')('This is a test.', 12345, [1, 2, 4, 5], { id: 1 });
+// Property Definition for modes
+const curr = new curryConsole(true);
+curr.profile = (true | false);
+curr.verbose = (true | false);
+curr.record = (true | false);
+curr.debug = (true | false);
+
+// Defaults for log
+curr.defaultLog = [COLOR.WHITE];
+curr.defaultLogLabel = [LABEL.WHITE, LABEL.BG_BLUE];
+
+// Defaults for info
+curr.defaultInfo = [COLOR.CYAN];
+curr.defaultInfoLabel = [LABEL.BLACK, LABEL.BG_CYAN];
+
+// Defaults for warn
+curr.defaultWarn = [COLOR.YELLOW];
+curr.defaultWarnLabel = [LABEL.BLACK, LABEL.BG_YELLOW];
+
+// Defaults for error
+curr.defaultError = [COLOR.RED];
+curr.defaultErrorLabel = [LABEL.WHITE, LABEL.BG_RED];
 ```
 
-#### Output
-![Example7](https://github.com/Codevendor/curry-console/blob/main/assets/example7.png?raw=true)
-
-
-### Special Rainbow Color
-
-There is a special rainbow color that can be set with [COLOR.RAINBOW](), that renders colors per each character of the log message.
-```js
-console.log(COLOR.RAINBOW)("This is a rainbow colored message.")
-```
-
-#### Output
-![Example8](https://github.com/Codevendor/curry-console/blob/main/assets/example8.png?raw=true)
-
-### Verbose Mode - Default: [true]()
+### Global: Verbose Mode - Default: [true]()
 
 If you would like to stop all messages sent through console from displaying in the terminal, you can set the verbose mode to [false]().
 This feature can be used for **production** or **development** modes to show only specific messages foreach. This mode can be used in combination with history to record messages, but don't show them.
@@ -214,7 +254,7 @@ const curr = new curryConsole();
 curr.verbose = true;
 ```
 
-### Record Mode - Default: [false]()
+### Global: Record Mode - Default: [false]()
 
 If you would like to record a history of all messages logged inside an internal array of objects, set the record mode to [true](). The objects in the array will contain extra information about each log call, like colors/effects, profiler, etc. 
 ```js
@@ -230,6 +270,11 @@ const curr = new curryConsole();
 curr.record = true;
 ```
 You can access the history array with the property ([history]()). You will need to write your own code for managing the array from getting too full. There is a public method [reset()](), that can be used to clear the history array and reset it.  
+
+### Global: Debug Mode - Default [false]()
+
+Turning on this feature will add a **filepath** and **line** and **column** number, per message. 
+
 
 ### Actions - [Coming soon...]()
 
