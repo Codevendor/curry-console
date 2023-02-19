@@ -128,7 +128,9 @@ You can also add color effects to your text. In the above example we set the tex
 
 **Label tags** are an awesome feature for identifying what process created the log message. You are free to use the label for anything you want. To use labels, you need to add a [LABEL]() constant to your curry. You can color the label and text anyway you want.
 
-**Format**: console.log ( [COLOR | LABEL | FEATURE]() )( "[LABEL-STRING]()" )( "[MSG]()" )
+**Format**: console.log ( [curryConsoleTypes]() )( "[LABEL-STRING]()" )( "[MSG]()" )
+
+#### curryConsoleTypes - [COLOR]() | [LABEL]() | [ACTION()]()
 
 ```js
 console.log(LABEL.BG_BLUE, LABEL.WHITE, COLOR.WHITE)('MY-LABEL')('CurryConsole Testing');
