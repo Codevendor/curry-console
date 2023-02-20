@@ -4,6 +4,9 @@
 import { curryEventEmitter } from "./event-emitter.js";
 import { COLOR } from "./color.js";
 import { LABEL } from "./label.js";
+import { ACTION } from "./action.js";
+import { onlyCurryTypes, calculateTime, rainbowize, groupTypes, parseBool, type_of } from "../helpers/helpers.js";
+import { actionDebug } from "../actions/actions.js";
 
 /**
  * Adds color features to console, without changing standard functionality.
@@ -14,22 +17,24 @@ export class curryConsole extends curryEventEmitter {
     #profile = false;
     #verbose = false;
     #record = false;
+    #debug = false;
+    #emitter = false;
 
     #utcPrev = 0;
 
-    #standardLog = null;
-    #standardInfo = null;
-    #standardWarn = null;
-    #standardError = null;
+    #console = {
+        log: null,
+        info: null,
+        warn: null,
+        error: null
+    };
 
-    #defaultLog = [];
-    #defaultLogLabel = [];
-    #defaultInfo = [];
-    #defaultInfoLabel = [];
-    #defaultWarn = [];
-    #defaultWarnLabel = [];
-    #defaultError = [];
-    #defaultErrorLabel = [];
+    #defaults = {
+        log: [],
+        info: [],
+        warn: [],
+        error: [],
+    };
 
     /** Returns the history of the logging. */
     get history() { return this.#history; }
@@ -41,7 +46,7 @@ export class curryConsole extends curryEventEmitter {
      * Sets whether in profile mode and displaying profiler information.
      * @param {boolean} value - Whether to display profiler information in terminal.
      */
-    set profile(value) { this.#profile = value; }
+    set profile(value) { this.#profile = parseBool(value); }
 
     /** Gets whether in verbose mode and displaying to terminal. */
     get verbose() { return this.#verbose; }
@@ -50,7 +55,7 @@ export class curryConsole extends curryEventEmitter {
      * Sets whether in verbose mode and displaying to terminal.
      * @param {boolean} value - Whether to display to terminal.
      */
-    set verbose(value) { this.#verbose = value; }
+    set verbose(value) { this.#verbose = parseBool(value); }
 
     /** Gets whether in record mode and recording all console history. */
     get record() { return this.#record; }
@@ -59,110 +64,86 @@ export class curryConsole extends curryEventEmitter {
      * Sets whether in record mode and recording all console history.
      * @param {boolean} value - Whether to record history.
      */
-    set record(value) { this.#record = value; }
+    set record(value) { this.#record = parseBool(value); }
 
-    /** Gets the default color for log(). */
-    get defaultLog() { return this.#defaultLog; }
+    /** Gets whether in debug mode and and can see filepath and line and colum number. */
+    get debug() { return this.#debug; }
 
     /**
-     * Sets the default color for log().
-     * @param {boolean} value - The default colors for log().
+     * Sets whether in debug mode is outputing information, filepath, line and colum number.
+     * @param {boolean} value - Whether to output debug info, filepath, line and colum number.
      */
-    set defaultLog(value) {
+    set debug(value) { this.#debug = parseBool(value); }
+
+    /** Gets whether in emitter mode and fires emit events. */
+    get emitter() { return this.#emitter; }
+
+    /**
+     * Sets whether in emitter mode and fires emit events..
+     * @param {boolean} value - Whether in emitter mode and fires emit events..
+     */
+    set emitter(value) { this.#emitter = parseBool(value); }
+
+    /** Gets the defaults */
+    get defaults() { return this.#defaults; }
+
+    /** Gets the defaults for log. */
+    get defaultsLog() { return this.#defaults.log; }
+
+    /**
+     * Sets the defaults for log.
+     * @param {array} value - The defaults for log.
+     */
+    set defaultsLog(value) {
         if (!Array.isArray(value)) throw new TypeError(`Property defaultLog value, must be an array of curryConsoleType(s).`);
-        this.#defaultLog = value;
+        this.#defaults.log = value;
     }
 
-    /** Gets the default label color for log(). */
-    get defaultLogLabel() { return this.#defaultLogLabel; }
+    /** Gets the defaults for info. */
+    get defaultsInfo() { return this.#defaults.info; }
 
     /**
-     * Sets the default label color for log().
-     * @param {boolean} value - The default label colors for log().
+     * Sets the defaults for info.
+     * @param {array} value - The defaults for info.
      */
-    set defaultLogLabel(value) {
-        if (!Array.isArray(value)) throw new TypeError(`Property defaultLogLabel value, must be an array of curryConsoleType(s).`);
-        this.#defaultLogLabel = value;
-    }
-
-    /** Gets the default color for info(). */
-    get defaultInfo() { return this.#defaultInfo; }
-
-    /**
-     * Sets the default color for info().
-     * @param {boolean} value - The default colors for info().
-     */
-    set defaultInfo(value) {
+    set defaultsInfo(value) {
         if (!Array.isArray(value)) throw new TypeError(`Property defaultInfo value, must be an array of curryConsoleType(s).`);
-        this.#defaultInfo = value;
+        this.#defaults.info = value;
     }
 
-    /** Gets the default label color for info(). */
-    get defaultInfoLabel() { return this.#defaultInfoLabel; }
+    /** Gets the defaults for warn. */
+    get defaultsWarn() { return this.#defaults.warn; }
 
     /**
-     * Sets the default label color for info().
-     * @param {boolean} value - The default label colors for info().
+     * Sets the defaults for warn.
+     * @param {array} value - The defaults for warn.
      */
-    set defaultInfoLabel(value) {
-        if (!Array.isArray(value)) throw new TypeError(`Property defaultInfoLabel value, must be an array of curryConsoleType(s).`);
-        this.#defaultInfoLabel = value;
-    }
-
-    /** Gets the default color for warn(). */
-    get defaultWarn() { return this.#defaultWarn; }
-
-    /**
-     * Sets the default color for warn().
-     * @param {boolean} value - The default colors for warn().
-     */
-    set defaultWarn(value) {
+    set defaultsWarn(value) {
         if (!Array.isArray(value)) throw new TypeError(`Property defaultWarn value, must be an array of curryConsoleType(s).`);
-        this.#defaultWarn = value;
+        this.#defaults.warn = value;
     }
 
-    /** Gets the default label color for warn(). */
-    get defaultWarnLabel() { return this.#defaultWarnLabel; }
+    /** Gets the defaults for error. */
+    get defaultsError() { return this.#defaults.error; }
 
     /**
-     * Sets the default label color for warn().
-     * @param {boolean} value - The default label colors for warn().
+     * Sets the defaults for error.
+     * @param {array} value - The defaults for error.
      */
-    set defaultWarnLabel(value) {
-        if (!Array.isArray(value)) throw new TypeError(`Property defaultWarnLabel value, must be an array of curryConsoleType(s).`);
-        this.#defaultWarnLabel = value;
-    }
-
-    /** Gets the default color for error(). */
-    get defaultError() { return this.#defaultError; }
-
-    /**
-     * Sets the default color for error().
-     * @param {boolean} value - The default colors for error().
-     */
-    set defaultError(value) {
+    set defaultsError(value) {
         if (!Array.isArray(value)) throw new TypeError(`Property defaultError value, must be an array of curryConsoleType(s).`);
-        this.#defaultError = value;
-    }
-
-    /** Gets the default label color for error(). */
-    get defaultErrorLabel() { return this.#defaultErrorLabel; }
-
-    /**
-     * Sets the default label color for error().
-     * @param {boolean} value - The default label colors for error().
-     */
-    set defaultErrorLabel(value) {
-        if (!Array.isArray(value)) throw new TypeError(`Property defaultErrorLabel value, must be an array of curryConsoleType(s).`);
-        this.#defaultErrorLabel = value;
+        this.#defaults.error = value;
     }
 
     /**
      * The constructor for the curryConsole.
-     * @param {*} profile 
-     * @param {*} verbose 
+     * @param {boolean} verbose - Whether to display messages.
+     * @param {boolean} profile - Whether to enable profiling. 
+     * @param {boolean} record - Whether to record messages to history.
+     * @param {boolean} debug - Whether to show debug information.
+     * @param {boolean} emitter - Whether to emit events with event emitter.
      */
-    constructor(profile = false, verbose = true, record = false) {
+    constructor(verbose = true, profile = false, record = false, debug = false, emitter = false) {
 
         // Extend emitter
         super();
@@ -171,132 +152,133 @@ export class curryConsole extends curryEventEmitter {
         this.#verbose = verbose;
         this.#profile = profile;
         this.#record = record;
+        this.#debug = debug;
+        this.#emitter = emitter;
 
         // Backup original methods
-        this.#standardLog = console.log;
-        this.#standardInfo = console.info;
-        this.#standardWarn = console.warn;
-        this.#standardError = console.error;
+        this.#console = {};
+        this.#console.log = console.log;
+        this.#console.info = console.info;
+        this.#console.warn = console.warn;
+        this.#console.error = console.error;
 
         const self = this;
 
-        // Log Curry
+        // Log
         console.log = (...a) => {
 
-            if (a.length === 0 || a[0]?.type === 'curryConsoleType') {
+            if (a.length === 0 || onlyCurryTypes(a)) {
 
                 // Check for label
                 const found = a.find(item => item.name === 'labelObject');
                 if (found) {
                     return (...b) => {
                         return (...c) => {
-                            self.#log(a, b, c);
+                            self.#process('log', a, b, c);
                         };
                     };
                 } else {
                     return (...b) => {
-                        self.#log(a, b);
+                        self.#process('log', a, b);
                     };
                 }
 
             }
 
             // Emit Event
-            self.emit('message', { type: 'console.log()', params: a });
+            if (this.#emitter) self.emit('message', { library: 'console', type: 'log', args: a });
 
             // Write to standard console.log
-            self.#standardLog(...a);
+            self.#console.log(...a);
 
         };
 
-        // Log info
+        // Info
         console.info = (...a) => {
 
-
-            if (a.length === 0 || a[0]?.type === 'curryConsoleType') {
+            if (a.length === 0 || onlyCurryTypes(a)) {
 
                 // Check for label
                 const found = a.find(item => item.name === 'labelObject');
                 if (found) {
                     return (...b) => {
                         return (...c) => {
-                            self.#info(a, b, c);
+                            self.#process('info', a, b, c);
                         };
                     };
                 } else {
                     return (...b) => {
-                        self.#info([], a, b);
+                        self.#process('info', a, b);
                     };
                 }
 
             }
 
             // Emit Event
-            self.emit('message', { type: 'console.info()', params: a });
+            if (this.#emitter) self.emit('message', { library: 'console', type: 'info', args: a });
 
             // Write to standard console.info
-            self.#standardInfo(...a);
-
+            self.#console.info(...a);
 
         };
 
-        // Log warn
-        console.warn = (...a) => {
+        // Warn
+        console.log = (...a) => {
 
-            if (a.length === 0 || a[0]?.type === 'curryConsoleType') {
+            if (a.length === 0 || onlyCurryTypes(a)) {
 
                 // Check for label
                 const found = a.find(item => item.name === 'labelObject');
                 if (found) {
                     return (...b) => {
                         return (...c) => {
-                            self.#warn(a, b, c);
+                            self.#process('warn', a, b, c);
                         };
                     };
                 } else {
                     return (...b) => {
-                        self.#warn([], a, b);
+                        self.#process('warn', a, b);
                     };
                 }
 
             }
 
             // Emit Event
-            self.emit('message', { type: 'console.warn()', params: a });
+            if (this.#emitter) self.emit('message', { library: 'console', type: 'warn', args: a });
 
             // Write to standard console.warn
-            self.#standardWarn(...a);
+            self.#console.warn(...a);
 
         };
 
-        // Log error
-        console.error = (...a) => {
+                // Error
+                console.error = (...a) => {
 
-            if (a.length === 0 || a[0]?.type === 'curryConsoleType') {
-
-                // Check for label
-                const found = a.find(item => item.name === 'labelObject');
-                if (found) {
-                    return (...b) => {
-                        return (...c) => {
-                            self.#error(a, b, c);
-                        };
-                    };
-                } else {
-                    return (...b) => {
-                        self.#error([], a, b);
-                    };
-                }
-
-            }
-
-            // Emit Event
-            self.emit('message', { type: 'console.error()', params: a });
-
-            // Write to standard console.error
-            self.#standardError(...a);
-
-        };
+                    if (a.length === 0 || onlyCurryTypes(a)) {
+        
+                        // Check for label
+                        const found = a.find(item => item.name === 'labelObject');
+                        if (found) {
+                            return (...b) => {
+                                return (...c) => {
+                                    self.#process('error', a, b, c);
+                                };
+                            };
+                        } else {
+                            return (...b) => {
+                                self.#process('error', a, b);
+                            };
+                        }
+        
+                    }
+        
+                    // Emit Event
+                    if (this.#emitter) self.emit('message', { library:'console', type: 'error', args: a });
+        
+                    // Write to standard console.error
+                    self.#console.error(...a);
+        
+                };
 
     }
 
@@ -306,477 +288,202 @@ export class curryConsole extends curryEventEmitter {
     }
 
     /**
-     * Calculates the milliseconds into shorthand string.
-     * @param {number} ms - The milliseconds to caculate into shorthand string.
-     * @returns {string} - The shorthand string.
+     * Calculates a profile time object.
+     * @param {boolean} enabled - Whether to show profile info. 
+     * @returns {object} - Returns an object ith profile information.
      */
-    #calculate_time(ms) {
+    #profiler(enabled = false) {
 
-        let ms2 = ((ms % 1000) / 100).toString().split('.');
-        ms2 = (ms2.length > 1) ? ms2[1] : ms2[0];
-        const secs = Math.floor((ms / 1000) % 60);
+        const profile = {
 
-        return `+${secs}.${ms2}ms`;
-    }
+            curr: 0,
+            diff: 0,
+            str: '',
+            output: ''
 
-    /**
-     * Calculates a profile time.
-     * @returns {number} - Returns a number of difference since last log.
-     */
-    #profiler() {
+        };
 
-        let diff;
+        if (enabled) {
 
-        // Create date
-        const utc = new Date();
+            profile.curr = Number(new Date());
+            profile.diff = profile.curr - this.#utcPrev;
 
-        // Calculate previous date
-        const curr = Number(utc);
-        diff = curr - this.#utcPrev;
+            // Store new utc
+            this.#utcPrev = profile.curr;
 
-        // Store new utc
-        this.#utcPrev = curr;
+            profile.str = calculateTime(profile.diff);
+            profile.output = COLOR.RESET + COLOR.DIM + COLOR.WHITE + profile.str + COLOR.RESET;
 
-        return diff;
+        }
+
+        return profile;
 
     }
 
     /**
-     * Rainbowizes text output colors.
-     * @param {*} args - The arguments to merge into rainbox text.
-     * @return {string} - A rainbow text string.
+     * Processes the console calls.
+     * @param {string} logType - The log type (log, info, warn, error)
+     * @param {array} curryConsoleTypes - The curry console types to process.
+     * @param {any} args - The arguments to process. 
      */
-    #rainbowize(args) {
+    #process(logType, curryConsoleTypes, ...args) {
 
-        // Build text together
-        const rbString = args.map(item => {
-            return ((typeof item !== 'string') ? JSON.stringify(item) : item);
-        }).join(' ');
+        // Get modes
+        let verboseMode = this.#verbose;
+        let emitMode = this.#emitter;
+        let recordMode = this.#record;
 
-        const rainbow = [COLOR.RED, COLOR.GREEN, COLOR.YELLOW, COLOR.BLUE, COLOR.MAGENTA, COLOR.CYAN, COLOR.WHITE];
+        // Get profile object
+        let profile = this.#profiler(this.#profile);
 
-        let pos = -1;
-        let rbReturn = '';
-        for (let i = 0; i < rbString.length; i++) {
-            const char = rbString[i];
-            if (char.match(/\s/g)) { rbReturn += char; continue; }
-            pos++;
-            if (pos === rainbow.length) pos = 0;
-            rbReturn += COLOR.RESET + rainbow[pos] + rbString[i];
-        }
+        // Gets the debug info
+        let debugInfo = actionDebug(this.#debug);
 
-        return rbReturn;
-    }
+        // Get defaults 
+        const defaults = this.#defaults[logType];
 
-    /** Writes log to console if verbose is true. */
-    #log() {
+        // Group all the cuuryConsoleTypes
+        const types = groupTypes(curryConsoleTypes, defaults);
 
-        // Check for profile
-        let prof = '';
-        let diff = 0;
-        let diffString = '';
-        if (this.#profile) {
-            diff = this.#profiler();
-            diffString = this.#calculate_time(diff);
-            prof = COLOR.RESET + COLOR.DIM + COLOR.WHITE + diffString + COLOR.RESET;
-        }
-
-        // Check type
-        let args = [];
-        let labelColors = '';
-        let colors = '';
-        if (arguments.length == 2) {
-
-            // Filter just colorObjects
-            colors = arguments[0].filter(item => item.name === 'colorObject');
-
-            // Check for default
-            if (colors.length === 0 || colors[0].key === 'DEFAULT') {
-                colors = this.#defaultLog.filter(item => item.name === 'colorObject');
-            }
-
-            // Join to string
-            //colors = COLOR.RESET + colors.join('');
+        // Check if no label or label
+        let preLabels = [];
+        let preColors = [];
+        let outputArgs = [];
+        if (args.length === 1) {
 
             // Check if color rainbow
-            if (colors.length === 1 && colors[0].key === 'RAINBOW') {
+            if (types.colorObject.find(item => item.key === 'RAINBOW')) {
 
-                const rainbow = this.#rainbowize(arguments[1]);
-                args = [rainbow];
+                const rainbow = rainbowize(args[0]);
+                preColors = [rainbow];
 
             } else {
 
                 // Build text
-                args = arguments[1].map(item => {
-                    return COLOR.RESET + colors.join('') + ((typeof item !== 'string') ? JSON.stringify(item) : item) + COLOR.RESET;
+                preColors = args[0].map(item => {
+                    if (typeof item !== 'string') item = JSON.stringify(item);
+                    return COLOR.RESET + types.colorObject.join('') + item + COLOR.RESET;
                 });
 
             }
 
-
         } else {
 
-            // Filter just labelObjects
-            labelColors = arguments[0].filter(item => item.name === 'labelObject');
+            // Check if label rainbow
+            if (types.labelObject.find(item => item.key === 'RAINBOW')) {
 
-            // Check for defaults
-            if (labelColors.length === 0 || labelColors[0].key === 'DEFAULT') {
-                labelColors = this.#defaultLogLabel.filter(item => item.name === 'labelObject');
+                const rainbow = rainbowize(args[0]);
+                preLabels = [rainbow];
+
+            } else {
+
+                // Build text
+                preLabels = args[0].map(item => {
+                    if (typeof item !== 'string') item = JSON.stringify(item);
+                    return COLOR.RESET + types.labelObject.join('') + item + COLOR.RESET;
+                });
+
             }
 
-            // Join to string
-            labelColors = LABEL.RESET + labelColors.join('');
+            // Check if color rainbow
+            if (types.colorObject.find(item => item.key === 'RAINBOW')) {
 
-            // Filter just colorObjects
-            colors = arguments[0].filter(item => item.name === 'colorObject');
+                const rainbow = rainbowize(args[1]);
+                preColors = [rainbow];
 
-            // Check for default
-            if (colors.length === 0 || colors[0].key === 'DEFAULT') {
-                colors = this.#defaultLog.filter(item => item.name === 'colorObject');
+            } else {
+
+                // Build text
+                preColors = args[1].map(item => {
+                    if (typeof item !== 'string') item = JSON.stringify(item);
+                    return COLOR.RESET + types.colorObject.join('') + item + COLOR.RESET;
+                });
+
             }
 
-            // Join to string
-            colors = COLOR.RESET + colors.join('');
+        }
 
-            // Build label
-            args = arguments[1].map(item => {
-                return labelColors + ((typeof item !== 'string') ? JSON.stringify(item) : item) + LABEL.RESET;
-            });
+        // Combine labels with colors
+        outputArgs = preLabels.concat(preColors);
 
-            // Build text
-            const args2 = arguments[2].map(item => {
-                return colors + ((typeof item !== 'string') ? JSON.stringify(item) : item) + COLOR.RESET
-            });
+        // Emit event
+        if (this.#emitter) this.emit('message', { type: `curryConsole.${logType}()`, params: historyItem });
 
-            // Merge arrays
-            args = args.concat(args2);
+        // Loop through actions
+        for (let i = 0; i < types.actionObject.length; i++) {
+
+            const action = types.actionObject[i];
+            switch (action.key) {
+
+                // Show message
+                case 'VERBOSE':
+
+                    verboseMode = action.method(...action.args);
+                    break;
+
+                // Whether to record.
+                case 'RECORD':
+
+                    recordMode = action.method(...action.args);
+                    break;
+
+                case 'EMIT':
+
+                    emitMode = action.method(...action.args);
+                    break;
+
+                // Show Debug info
+                case 'DEBUG':
+
+                    debugInfo = action.method(...action.args);
+                    break;
+
+                // Delays a message
+                case 'DELAY': break;
+
+                // Not specified
+                default: break;
+
+            }
+
         }
 
         // The history item
         const historyItem = {
+            library: 'curry-console',
+            type: logType,
+            emitMode: emitMode,
+            verboseMode: verboseMode,
+            recordMode: recordMode,
             args: arguments,
-            defaultLog: this.defaultLog,
-            defaultLogLabel: this.#defaultLogLabel,
-            diff: diff,
-            diffString: diffString,
-            profile: prof,
-            output: args
+            globlaDefaluts: defaults,
+            processedTypes: types,
+            profile: profile,
+            outputArgs: outputArgs
         };
 
-        // Write to history if record is enabled
-        if (this.record) {
-            this.history.push(historyItem);
+        // Record history
+        if (recordMode) this.history.push(historyItem);
+
+        // Emit Event
+        if (emitMode) this.emit('message', historyItem);
+
+        // Check if delay
+        const delay = types.actionObject.find(item => item.key === 'DELAY');
+        if (delay) {
+
+            delay.method(...delay.args, () => {
+
+                // Write
+                if (!this.#verbose) this.#console[logType](...outputArgs, profile.output + debugInfo.output);
+
+            });
+            return;
         }
 
-        // Emit event
-        this.emit('message', { type: 'curryConsole.log()', params: historyItem });
-
-        // Check if writing to history only.
-        if (!this.#verbose) return;
-
-        // Label + Standard
-        this.#standardLog(...args, prof);
+        // Write 
+        if (this.#verbose) this.#console[logType](...outputArgs, profile.output + debugInfo.output);
 
     }
-
-    /** Writes info to console if verbose is true. */
-    #info() {
-
-        // Check for profile
-        let prof = '';
-        let diff = 0;
-        let diffString = '';
-        if (this.#profile) {
-            diff = this.#profiler();
-            diffString = this.#calculate_time(diff);
-            prof = COLOR.RESET + COLOR.DIM + COLOR.WHITE + diffString + COLOR.RESET;
-        }
-
-        // Check type
-        let args = [];
-        let labelColors = '';
-        let colors = '';
-        if (arguments.length == 2) {
-
-            // Filter just colorObjects
-            colors = arguments[0].filter(item => item.name === 'colorObject');
-
-            // Check for default
-            if (colors.length === 0 || colors[0].key === 'DEFAULT') {
-                colors = this.#defaultLog.filter(item => item.name === 'colorObject');
-            }
-
-            // Join to string
-            colors = COLOR.RESET + colors.join('');
-
-            // Build text
-            args = arguments[1].map(item => {
-                return colors + ((typeof item !== 'string') ? JSON.stringify(item) : item) + COLOR.RESET;
-            });
-
-        } else {
-
-            // Filter just labelObjects
-            labelColors = arguments[0].filter(item => item.name === 'labelObject');
-
-            // Check for defaults
-            if (labelColors.length === 0 || labelColors[0].key === 'DEFAULT') {
-                labelColors = this.#defaultLogLabel.filter(item => item.name === 'labelObject');
-            }
-
-            // Join to string
-            labelColors = LABEL.RESET + labelColors.join('');
-
-            // Filter just colorObjects
-            colors = arguments[0].filter(item => item.name === 'colorObject');
-
-            // Check for default
-            if (colors.length === 0 || colors[0].key === 'DEFAULT') {
-                colors = this.#defaultLog.filter(item => item.name === 'colorObject');
-            }
-
-            // Join to string
-            colors = COLOR.RESET + colors.join('');
-
-            // Build label
-            args = arguments[1].map(item => {
-                return labelColors + ((typeof item !== 'string') ? JSON.stringify(item) : item) + LABEL.RESET;
-            });
-
-            // Build text
-            const args2 = arguments[2].map(item => {
-                return colors + ((typeof item !== 'string') ? JSON.stringify(item) : item) + COLOR.RESET
-            });
-
-            // Merge arrays
-            args = args.concat(args2);
-        }
-
-        // The history item
-        const historyItem = {
-            args: arguments,
-            defaultLog: this.defaultLog,
-            defaultLogLabel: this.#defaultLogLabel,
-            diff: diff,
-            diffString: diffString,
-            profile: prof,
-            output: args
-        };
-
-        // Write to history if record is enabled
-        if (this.record) {
-            this.history.push(historyItem);
-        }
-
-        // Emit event
-        this.emit('message', { type: 'curryConsole.info()', params: historyItem });
-
-        // Check if writing to history only.
-        if (!this.#verbose) return;
-
-        // Label + Standard
-        this.#standardInfo(...args, prof);
-
-    }
-
-    /** Writes warn to console if verbose is true. */
-    #warn() {
-
-        // Check for profile
-        let prof = '';
-        let diff = 0;
-        let diffString = '';
-        if (this.#profile) {
-            diff = this.#profiler();
-            diffString = this.#calculate_time(diff);
-            prof = COLOR.RESET + COLOR.DIM + COLOR.WHITE + diffString + COLOR.RESET;
-        }
-
-        // Check type
-        let args = [];
-        let labelColors = '';
-        let colors = '';
-        if (arguments.length == 2) {
-
-            // Filter just colorObjects
-            colors = arguments[0].filter(item => item.name === 'colorObject');
-
-            // Check for default
-            if (colors.length === 0 || colors[0].key === 'DEFAULT') {
-                colors = this.#defaultLog.filter(item => item.name === 'colorObject');
-            }
-
-            // Join to string
-            colors = COLOR.RESET + colors.join('');
-
-            // Build text
-            args = arguments[1].map(item => {
-                return colors + ((typeof item !== 'string') ? JSON.stringify(item) : item) + COLOR.RESET;
-            });
-
-        } else {
-
-            // Filter just labelObjects
-            labelColors = arguments[0].filter(item => item.name === 'labelObject');
-
-            // Check for defaults
-            if (labelColors.length === 0 || labelColors[0].key === 'DEFAULT') {
-                labelColors = this.#defaultLogLabel.filter(item => item.name === 'labelObject');
-            }
-
-            // Join to string
-            labelColors = LABEL.RESET + labelColors.join('');
-
-            // Filter just colorObjects
-            colors = arguments[0].filter(item => item.name === 'colorObject');
-
-            // Check for default
-            if (colors.length === 0 || colors[0].key === 'DEFAULT') {
-                colors = this.#defaultLog.filter(item => item.name === 'colorObject');
-            }
-
-            // Join to string
-            colors = COLOR.RESET + colors.join('');
-
-            // Build label
-            args = arguments[1].map(item => {
-                return labelColors + ((typeof item !== 'string') ? JSON.stringify(item) : item) + LABEL.RESET;
-            });
-
-            // Build text
-            const args2 = arguments[2].map(item => {
-                return colors + ((typeof item !== 'string') ? JSON.stringify(item) : item) + COLOR.RESET
-            });
-
-            // Merge arrays
-            args = args.concat(args2);
-        }
-
-        // The history item
-        const historyItem = {
-            args: arguments,
-            defaultLog: this.defaultLog,
-            defaultLogLabel: this.#defaultLogLabel,
-            diff: diff,
-            diffString: diffString,
-            profile: prof,
-            output: args
-        };
-
-        // Write to history if record is enabled
-        if (this.record) {
-            this.history.push(historyItem);
-        }
-
-        // Emit event
-        this.emit('message', { type: 'curryConsole.warn()', params: historyItem });
-
-        // Check if writing to history only.
-        if (!this.#verbose) return;
-
-        // Label + Standard
-        this.#standardWarn(...args, prof);
-    }
-
-    /** Writes error to console if verbose is true. */
-    #error() {
-
-        // Check for profile
-        let prof = '';
-        let diff = 0;
-        let diffString = '';
-        if (this.#profile) {
-            diff = this.#profiler();
-            diffString = this.#calculate_time(diff);
-            prof = COLOR.RESET + COLOR.DIM + COLOR.WHITE + diffString + COLOR.RESET;
-        }
-
-        // Check type
-        let args = [];
-        let labelColors = '';
-        let colors = '';
-        if (arguments.length == 2) {
-
-            // Filter just colorObjects
-            colors = arguments[0].filter(item => item.name === 'colorObject');
-
-            // Check for default
-            if (colors.length === 0 || colors[0].key === 'DEFAULT') {
-                colors = this.#defaultLog.filter(item => item.name === 'colorObject');
-            }
-
-            // Join to string
-            colors = COLOR.RESET + colors.join('');
-
-            // Build text
-            args = arguments[1].map(item => {
-                return colors + ((typeof item !== 'string') ? JSON.stringify(item) : item) + COLOR.RESET;
-            });
-
-        } else {
-
-            // Filter just labelObjects
-            labelColors = arguments[0].filter(item => item.name === 'labelObject');
-
-            // Check for defaults
-            if (labelColors.length === 0 || labelColors[0].key === 'DEFAULT') {
-                labelColors = this.#defaultLogLabel.filter(item => item.name === 'labelObject');
-            }
-
-            // Join to string
-            labelColors = LABEL.RESET + labelColors.join('');
-
-            // Filter just colorObjects
-            colors = arguments[0].filter(item => item.name === 'colorObject');
-
-            // Check for default
-            if (colors.length === 0 || colors[0].key === 'DEFAULT') {
-                colors = this.#defaultLog.filter(item => item.name === 'colorObject');
-            }
-
-            // Join to string
-            colors = COLOR.RESET + colors.join('');
-
-            // Build label
-            args = arguments[1].map(item => {
-                return labelColors + ((typeof item !== 'string') ? JSON.stringify(item) : item) + LABEL.RESET;
-            });
-
-            // Build text
-            const args2 = arguments[2].map(item => {
-                return colors + ((typeof item !== 'string') ? JSON.stringify(item) : item) + COLOR.RESET
-            });
-
-            // Merge arrays
-            args = args.concat(args2);
-        }
-
-        // The history item
-        const historyItem = {
-            args: arguments,
-            defaultLog: this.defaultLog,
-            defaultLogLabel: this.#defaultLogLabel,
-            diff: diff,
-            diffString: diffString,
-            profile: prof,
-            output: args
-        };
-
-        // Write to history if record is enabled
-        if (this.record) {
-            this.history.push(historyItem);
-        }
-
-        // Emit event
-        this.emit('message', { type: 'curryConsole.error()', params: historyItem });
-
-        // Check if writing to history only.
-        if (!this.#verbose) return;
-
-        // Label + Standard
-        this.#standardError(...args, prof);
-
-    }
-
 
 }

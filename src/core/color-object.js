@@ -8,7 +8,7 @@ import { curryObject } from "./curry-object.js";
 export class colorObject extends curryObject {
 
     /**
-     * The constructor for the labelObject.
+     * The constructor for the colorObject.
      * @param {string} key - The key to set.
      * @param {string} value - The value to set.
      */
