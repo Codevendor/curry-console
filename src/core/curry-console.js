@@ -223,7 +223,7 @@ export class curryConsole extends curryEventEmitter {
         };
 
         // Warn
-        console.log = (...a) => {
+        console.warn = (...a) => {
 
             if (a.length === 0 || onlyCurryTypes(a)) {
 
@@ -330,7 +330,7 @@ export class curryConsole extends curryEventEmitter {
 
         // Get modes
         let verboseMode = this.#verbose;
-        let emitMode = this.#emitter;
+        let emitterMode = this.#emitter;
         let recordMode = this.#record;
 
         // Get profile object
@@ -415,6 +415,20 @@ export class curryConsole extends curryEventEmitter {
             const action = types.actionObject[i];
             switch (action.key) {
 
+                // Indent
+                case 'INDENT':
+
+                    const indent = action.method(...action.args);
+                    outputArgs.unshift(indent);
+                    break;
+
+                // Show message
+                case 'PROFILE':
+
+                    const prof = action.method(...action.args);
+                    profile = this.#profiler(prof);
+                    break;
+
                 // Show message
                 case 'VERBOSE':
 
@@ -427,9 +441,9 @@ export class curryConsole extends curryEventEmitter {
                     recordMode = action.method(...action.args);
                     break;
 
-                case 'EMIT':
+                case 'EMITTER':
 
-                    emitMode = action.method(...action.args);
+                    emitterMode = action.method(...action.args);
                     break;
 
                 // Show Debug info
@@ -452,7 +466,7 @@ export class curryConsole extends curryEventEmitter {
         const historyItem = {
             library: 'curry-console',
             type: logType,
-            emitMode: emitMode,
+            emitterMode: emitterMode,
             verboseMode: verboseMode,
             recordMode: recordMode,
             args: arguments,
@@ -466,7 +480,7 @@ export class curryConsole extends curryEventEmitter {
         if (recordMode) this.history.push(historyItem);
 
         // Emit Event
-        if (emitMode) this.emit('message', historyItem);
+        if (emitterMode) this.emit('message', historyItem);
 
         // Check if delay
         const delay = types.actionObject.find(item => item.key === 'DELAY');

@@ -7,7 +7,7 @@ import { actionCall } from "../actions/action-call.js";
 import { actionDateTime } from "../actions/action-date-time.js";
 import { actionDebug } from "../actions/action-debug.js";
 import { actionDelay } from "../actions/action-delay.js";
-import { actionEmit } from "../actions/action-emit.js";
+import { actionEmitter } from "../actions/action-emitter.js";
 import { actionID } from "../actions/action-id.js";
 import { actionIndent } from "../actions/action-indent.js";
 import { actionProfile } from "../actions/action-profile.js";
@@ -25,13 +25,13 @@ export const ACTION = {
     DATETIME: (...args) => { return new actionObject("DATETIME", actionDateTime, args); },
     DEBUG: (...args) => { return new actionObject("DEBUG", actionDebug, args); },
     DELAY: (...args) => { return new actionObject("DELAY", actionDelay, args); },
-    EMIT: (...args) => { return new actionObject("ID", actionEmit, args); },
+    EMITTER: (...args) => { return new actionObject("EMITTER", actionEmitter, args); },
     ID: (...args) => { return new actionObject("ID", actionID, args); },
-    INDENT: (...args) => { return new actionObject("ID", actionIndent, args); },
+    INDENT: (...args) => { return new actionObject("INDENT", actionIndent, args); },
     PROFILE: (...args) => { return new actionObject("PROFILE", actionProfile, args); },
-    PROGRESSBAR: (...args) => { return new actionObject("VERBOSE", actionProgressBar, args); },
+    PROGRESSBAR: (...args) => { return new actionObject("PROGRESSBAR", actionProgressBar, args); },
     RECORD: (...args) => { return new actionObject("RECORD", actionRecord, args); },
-    SPINNER: (...args) => { return new actionObject("VERBOSE", actionSpinner, args); },
+    SPINNER: (...args) => { return new actionObject("SPINNER", actionSpinner, args); },
     VERBOSE: (...args) => { return new actionObject("VERBOSE", actionVerbose, args); }
 
 }

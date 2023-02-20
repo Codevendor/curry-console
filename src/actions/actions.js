@@ -8,7 +8,7 @@
 export { actionCall } from "./action-call.js";
 export { actionDebug } from "./action-debug.js";
 export { actionDelay } from "./action-delay.js";
-export { actionEmit } from "./action-emit.js";
+export { actionEmitter } from "./action-emitter.js";
 export { actionID } from "./action-id.js";
 export { actionDateTime } from "./action-date-time.js";
 export { actionIndent } from "./action-indent.js";

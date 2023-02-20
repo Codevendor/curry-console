@@ -50,4 +50,7 @@ export const COLOR = {
     BG_CYAN: new colorObject("BG_CYAN", "\x1b[46m"),
     BG_WHITE: new colorObject("BG_WHITE", "\x1b[47m"),
 
+    HEX: (...args)=> new colorObject("CUSTOM", "").HEX(...args),
+    RGB: (...args)=> new colorObject("CUSTOM", "").RGB(...args),
+
 };

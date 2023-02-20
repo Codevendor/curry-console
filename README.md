@@ -3,7 +3,7 @@
 </div>
 
 # curry-console - Overview
-The [**curry-console**]() module extends the native console logging library with many extra features like **coloring**, **labels**, **profiling**, **recording**, **hiding**, **event emit notifications**, etc. 
+The [**curry-console**]() module extends the native console logging library with many extra features like **coloring**, **labels**, **actions**, **profiling**, **recording**, **hiding**, **event emit notifications**, etc. 
 
 All extended new features are included, without changing the native behavior of the methods console **log()**, **info()**, **warn()** and **debug()**. By implementing **JavaScript Currying**, we are able to extend in an easy to use informative way.
 
@@ -80,7 +80,39 @@ Normally you would expect the second version to error, but [**CurryConsole**]() 
 | [COLOR.BG_CYAN]() | Renders the text background color cyan. |
 | [COLOR.BG_WHITE]() | Renders the text background color white. |
 
+### Custom Colors with Modern Terminals
+| Constant | Description |
+| :-- | :-- |
+| [COLOR.HEX]()    | Renders a hex color code for foreground or background.   |
+| [COLOR.RGB]() | Renders an RGB color for foreground or background.  |
 
+### Custom Color Usage for [HEX]() and [RGB]()
+
+If you would like to specify a **custom color**, I have included two methods [HEX]() and [RGB](). This feature will only work in modern terminals that support **true color**. Below is the format and example:
+
+#### Format(s):
+- **COLOR.[HEX]()** ( hexCode: <[_string_]()>, position: <[_string_]()> );
+- **COLOR.[RGB]()** ( red: <[_number_]()>, blue: <[_number_]()>, green: <[_number_]()>, position: <[_string_]()> )
+
+- Position = ( < [TEXT]() | [FG]() | [FRONT]() | [FOREGROUND]() > | < [BG]() | [BACK]() | [BACKGROUND]() > ). Defaults to [FOREGROUND]().
+
+#### Usage:
+```js
+// Color Hex Version Setting Foreground
+console.log(COLOR.HEX("#5B3300","FG"))('testing to see what this does!');
+
+// Color RGB Version Setting Background
+console.log(COLOR.RGB(235,80,80,"BG"))('testing to see what this does!');
+
+// Labels also include both functions as well
+
+// Label Hex Version Setting Foreground
+console.log(LABEL.HEX("#5B3300","FG"))('MY-LABEL')('testing to see what this does!');
+
+// Label RGB Version Setting Background
+console.log(LABEL.RGB(235,80,80,"BG"))('MY-LABEL')('testing to see what this does!');
+
+```
 
 ### Multi Coloring Example:
 ```js
@@ -211,7 +243,7 @@ The module contains [globals]() through constructor intialization or class prope
 #### Example Global Definition:
 ```js
 // Constructor Definition for modes
-constructor(profile = false, verbose = true, record = false, debug = false)
+constructor(verbose = true, profile = false, record = false, debug = false, emitter = false)
 
 // Property Definition for modes
 const curr = new curryConsole(true);
@@ -219,22 +251,19 @@ curr.profile = (true | false);
 curr.verbose = (true | false);
 curr.record = (true | false);
 curr.debug = (true | false);
+curr.emitter = (true | false )
 
 // Defaults for log
-curr.defaultLog = [COLOR.WHITE];
-curr.defaultLogLabel = [LABEL.WHITE, LABEL.BG_BLUE];
+curr.defaultLog = [COLOR.WHITE, LABEL.WHITE, LABEL.BG_BLUE];
 
 // Defaults for info
-curr.defaultInfo = [COLOR.CYAN];
-curr.defaultInfoLabel = [LABEL.BLACK, LABEL.BG_CYAN];
+curr.defaultInfo = [COLOR.CYAN, LABEL.BLACK, LABEL.BG_CYAN];
 
 // Defaults for warn
-curr.defaultWarn = [COLOR.YELLOW];
-curr.defaultWarnLabel = [LABEL.BLACK, LABEL.BG_YELLOW];
+curr.defaultWarn = [COLOR.YELLOW, LABEL.BLACK, LABEL.BG_YELLOW];
 
 // Defaults for error
-curr.defaultError = [COLOR.RED];
-curr.defaultErrorLabel = [LABEL.WHITE, LABEL.BG_RED];
+curr.defaultError = [COLOR.RED, LABEL.WHITE, LABEL.BG_RED];
 ```
 
 ### Global: Verbose Mode - Default: [true]()
@@ -269,32 +298,56 @@ import { curryConsole, COLOR, LABEL } from "curry-console";
 const curr = new curryConsole();
 curr.record = true;
 ```
-You can access the history array with the property ([history]()). You will need to write your own code for managing the array from getting too full. There is a public method [reset()](), that can be used to clear the history array and reset it.  
+You can access the history array with the property ([history]()). You will need to write your own code for managing the array from getting too full. There is a public method [reset()](), that can be used to clear the history array and reset it. 
+
+The array with contain a [historyItem]() object per message.
+
+#### Example: 
+```js
+// The history item so far
+const historyItem = {
+    library: 'curry-console',
+    type: logType,
+    emitterMode: emitterMode,
+    verboseMode: verboseMode,
+    recordMode: recordMode,
+    args: arguments,
+    globlaDefaluts: defaults,
+    processedTypes: types,
+    profile: profile,
+    outputArgs: outputArgs
+};
+```
 
 ### Global: Debug Mode - Default [false]()
 
-Turning on this feature will add a **filepath** and **line** and **column** number, per message. 
+Turning on this feature, will add a **filepath**, **line number** and **column**, per each message. 
 
 
-### Actions - [Coming soon...]()
+### Global: EmitterMode - Default [false]()
+
+Turning on this feature, will send [emit events]() every time console method is used. It will include a data object containing all the message information. 
+
+### Actions
 
 Building actions into [curry-console](), that can create special features to the console. Below is a list of [actions]().
 
 ### Action Features
-| Constant | Description |
-| :-- | :-- |
-| [ACTION.CALL(function, args)]()    | Allows you to call a method.    |
-| [ACTION.DATETIME(boolean or string)]() | Displays a date time stamp. |
-| [ACTION.DEBUG(boolean)]() | Enables or disables DEBUG mode per message. |
-| [ACTION.DELAY(milliseconds)]() | Delays in milliseconds the message from writing to terminal. |
-| [ACTION.EMIT(boolean)]() | Enables or disables EMIT mode per message. | 
-| [ACTION.ID(string)]() | Allows for creating a unique id for the message. |
-| [ACTION.PROFILE(boolean)]() | Enables or disables Profile mode per message. |
-| [ACTION.PROGRESSBAR(min, max, value)]() | Creates a progress bar in the console. |
-| [ACTION.RECORD(boolean)]() | Enables or disables Record mode per messages. |
-| [ACTION.SPINNER()]() | Creates a loading spinner in the console. |
-| [ACTION.VERBOSE(boolean)]() | Enables or disables verbose mode per message. |
-| More to come ... | Under Development |
+| Constant | Description | Active |
+| :-- | :-- | :-- |
+| [ACTION.CALL(function, args)]()         | Allows you to call a method.                                 | Coming Soon...  |
+| [ACTION.DATETIME(boolean or string)]()  | Displays a date time stamp.                                  | Coming Soon... |
+| [ACTION.DEBUG(boolean)]()               | Enables or disables DEBUG mode per message.                  | [Working]() |
+| [ACTION.DELAY(milliseconds)]()          | Delays in milliseconds the message from writing to terminal. | [Working]() |
+| [ACTION.EMITTER(boolean)]()             | Enables or disables EMIT mode per message.                   | [Working]() |
+| [ACTION.ID(string)]()                   | Allows for creating a unique id for the message.             | Coming Soon... |
+| [ACTION.INDENT(string)]()               | Allows you to indent a message line with whatever you want. Defaults to tab.             | [Working]() |
+| [ACTION.PROFILE(boolean)]()             | Enables or disables Profile mode per message.                | [Working]() |
+| [ACTION.PROGRESSBAR(min, max, value)]() | Creates a progress bar in the console.                       | Coming Soon... |
+| [ACTION.RECORD(boolean)]()              | Enables or disables Record mode per messages.                | [Working]() |
+| [ACTION.SPINNER()]()                    | Creates a loading spinner in the console.                    | Coming Soon... |
+| [ACTION.VERBOSE(boolean)]()             | Enables or disables verbose mode per message.                | [Working]() |
+| More to come ...                        | Under Development                                            | ...   |
 
 #### Action Usage Example:
 ```js
@@ -332,6 +385,8 @@ The parameter [data]() will return and object containing all the information abo
 
 <!-- CHANGELOG -->
 ## Change Log
+
+- [[ Feb 20, 2023]()] - Adding in custom colors from [hex]() and [rgb](). Shorten names of globals, to make it easier to manage. Revised code and made all global settings and message level settings work. Added in action [indent]().
 
 - [[ Feb 19, 2023 ]()] - More fixes. Added defaults and global definition to readme. Adding actions to version 0.0.3
 

@@ -16,7 +16,7 @@ export class curryObject {
      * Sets the key string.
      * @param {string} value - The key string.
      */
-    set key(value) { this.#key = this.#key; }
+    set key(value) { this.#key = value; }
 
     /** Gets the value. */
     get value() { return this.#value; }
@@ -25,7 +25,7 @@ export class curryObject {
      * Sets the value string.
      * @param {string} value - The value string.
      */
-    set value(value) { this.#value = this.#value; }
+    set value(value) { this.#value = value; }
 
     /** Get the name of the class. */
     get name() { return this.constructor.name; }

@@ -48,5 +48,8 @@ export const LABEL = {
     BG_BLUE: new labelObject("BG_BLUE", "\x1b[44m"),
     BG_MAGENTA: new labelObject("BG_MAGENTA", "\x1b[45m"),
     BG_CYAN: new labelObject("BG_CYAN", "\x1b[46m"),
-    BG_WHITE: new labelObject("BG_WHITE", "\x1b[47m")
+    BG_WHITE: new labelObject("BG_WHITE", "\x1b[47m"),
+
+    HEX: (...args)=> new labelObject("CUSTOM", "").HEX(...args),
+    RGB: (...args)=> new labelObject("CUSTOM", "").RGB(...args),
 };

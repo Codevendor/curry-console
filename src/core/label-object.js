@@ -1,11 +1,11 @@
 'use strict';
 
-import { curryObject } from "./curry-object.js";
+import { colorObject } from "./color-object.js";
 
 /**
  * For creating a labelObject.
  */
-export class labelObject extends curryObject {
+export class labelObject extends colorObject {
 
     /**
      * The constructor for the labelObject.

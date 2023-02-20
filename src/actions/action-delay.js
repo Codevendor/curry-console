@@ -9,7 +9,7 @@ import { type_of } from "../helpers/type-of.js";
   */
 export function actionDelay(ms, cb) {
 
-  if (type_of(ms, true) !== 'string' &&  type_of(ms, true) !== 'number') throw new TypeError(`Method actionDelay has incorrect type for first parameter (ms), must be a number or string number '1000'.`);
+  if (type_of(ms) !== 'string' && type_of(ms) !== 'number') throw new TypeError(`Method actionDelay has incorrect type for first parameter (ms), must be a number or string number '1000'.`);
   if (type_of(cb) !== 'function') throw new TypeError(`Method actionDelay has incorrect type for second parameter (cb), must be a function.`);
 
   ms = parseInt(ms);
