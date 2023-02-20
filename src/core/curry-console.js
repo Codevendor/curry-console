@@ -251,34 +251,34 @@ export class curryConsole extends curryEventEmitter {
 
         };
 
-                // Error
-                console.error = (...a) => {
+        // Error
+        console.error = (...a) => {
 
-                    if (a.length === 0 || onlyCurryTypes(a)) {
-        
-                        // Check for label
-                        const found = a.find(item => item.name === 'labelObject');
-                        if (found) {
-                            return (...b) => {
-                                return (...c) => {
-                                    self.#process('error', a, b, c);
-                                };
-                            };
-                        } else {
-                            return (...b) => {
-                                self.#process('error', a, b);
-                            };
-                        }
-        
-                    }
-        
-                    // Emit Event
-                    if (this.#emitter) self.emit('message', { library:'console', type: 'error', args: a });
-        
-                    // Write to standard console.error
-                    self.#console.error(...a);
-        
-                };
+            if (a.length === 0 || onlyCurryTypes(a)) {
+
+                // Check for label
+                const found = a.find(item => item.name === 'labelObject');
+                if (found) {
+                    return (...b) => {
+                        return (...c) => {
+                            self.#process('error', a, b, c);
+                        };
+                    };
+                } else {
+                    return (...b) => {
+                        self.#process('error', a, b);
+                    };
+                }
+
+            }
+
+            // Emit Event
+            if (this.#emitter) self.emit('message', { library: 'console', type: 'error', args: a });
+
+            // Write to standard console.error
+            self.#console.error(...a);
+
+        };
 
     }
 
@@ -472,12 +472,16 @@ export class curryConsole extends curryEventEmitter {
         const delay = types.actionObject.find(item => item.key === 'DELAY');
         if (delay) {
 
-            delay.method(...delay.args, () => {
+            const tempArgs = delay.args;
+            const cb = () => {
 
                 // Write
-                if (!this.#verbose) this.#console[logType](...outputArgs, profile.output + debugInfo.output);
+                if (this.#verbose) this.#console[logType](...outputArgs, profile.output + debugInfo.output);
 
-            });
+            };
+            tempArgs.push(cb);
+
+            delay.method(...tempArgs);
             return;
         }
 
