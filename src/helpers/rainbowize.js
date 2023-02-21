@@ -4,7 +4,7 @@ import { COLOR } from "../core/color.js";
 
 /**
  * Rainbowizes text output colors.
- * @param {*} args - The arguments to merge into rainbox text.
+ * @param {array} args - The arguments to merge into rainbox text.
  * @return {string} - A rainbow text string.
  */
 export function rainbowize(args) {

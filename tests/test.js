@@ -10,7 +10,7 @@ curr.profile = true;
 curr.debug = true;
 
 // Defaults for log
-curr.defaultsLog = [COLOR.WHITE, LABEL.WHITE, LABEL.BG_BLUE];
+curr.defaultsLog = [COLOR.WHITE];
 
 // Defaults for info
 curr.defaultsInfo = [COLOR.CYAN, LABEL.BLACK, LABEL.BG_CYAN];
@@ -20,6 +20,7 @@ curr.defaultsWarn = [COLOR.YELLOW, LABEL.BLACK, LABEL.BG_YELLOW];
 
 // Defaults for error
 curr.defaultsError = [COLOR.RED, LABEL.WHITE, LABEL.BG_RED];
+
 
 //console.log("\x1b[38;5;393m▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒")
 
@@ -79,35 +80,35 @@ if (process.argv?.[1].endsWith('test.js')) {
     });
 
     test('Curry console.log with label with parenthesis', async (t) => {
-        console.log(LABEL.RED)('LABEL-TEST')();
+        console.log(LABEL.RED)('LABEL-TEST');
     });
 
     test('Curry console.log with label and text', async (t) => {
-        console.log(LABEL.RED, COLOR.WHITE)('TEST7')('This should be a label and text color white console.log(LABEL.RED, COLOR.WHITE)(label)(msg)');
+        console.log(LABEL.RED, COLOR.WHITE)('TEST7', 'This should be a label and text color white console.log(LABEL.RED, COLOR.WHITE)(label)(msg)');
     });
 
     test('Curry console.log with header and background and text', async (t) => {
-        console.log(LABEL.WHITE, LABEL.BG_RED, COLOR.WHITE)('TEST8')('This should be a red label with white text and text color white console.log(LABEL.WHITE, LABEL.BG_RED, COLOR.WHITE)(label)(msg)');
+        console.log(LABEL.WHITE, LABEL.BG_RED, COLOR.WHITE)('TEST8', 'This should be a red label with white text and text color white console.log(LABEL.WHITE, LABEL.BG_RED, COLOR.WHITE)(label)(msg)');
     });
 
     test('Curry console.log with header and background and text and text color', async (t) => {
-        console.log(LABEL.WHITE, LABEL.BG_RED, COLOR.MAGENTA)('TEST9')('This should be a red label with white text and text color magenta console.log(LABEL.WHITE, LABEL.BG_RED, COLOR.MAGENTA)(label)(msg)');
+        console.log(LABEL.WHITE, LABEL.BG_RED, COLOR.MAGENTA)('TEST9', 'This should be a red label with white text and text color magenta console.log(LABEL.WHITE, LABEL.BG_RED, COLOR.MAGENTA)(label)(msg)');
     });
 
     test('Curry console.log with header and background and text color and background', async (t) => {
-        console.log(LABEL.WHITE, LABEL.BG_RED, COLOR.BG_MAGENTA, COLOR.WHITE)('TEST10')('This should be a red label with white text and text bg_color magenta with white text console.log(LABEL.WHITE, LABEL.BG_RED, COLOR.BG_MAGENTA, COLOR.WHITE)(label)(msg)');
+        console.log(LABEL.WHITE, LABEL.BG_RED, COLOR.BG_MAGENTA, COLOR.WHITE)('TEST10', 'This should be a red label with white text and text bg_color magenta with white text console.log(LABEL.WHITE, LABEL.BG_RED, COLOR.BG_MAGENTA, COLOR.WHITE)(label)(msg)');
     });
 
     test('Curry console.log with header and background and text color and background and special', async (t) => {
-        console.log(LABEL.WHITE, LABEL.BG_RED, COLOR.WHITE, COLOR.UNDERLINE)('TEST11')('This should be a red label with white text and white underlined text console.log(LABEL.WHITE, LABEL.BG_RED, COLOR.WHITE, COLOR.UNDERCORE)(label)(msg)', 'http://example.com');
+        console.log(LABEL.WHITE, LABEL.BG_RED, COLOR.WHITE, COLOR.UNDERLINE)('TEST11', 'This should be a red label with white text and white underlined text console.log(LABEL.WHITE, LABEL.BG_RED, COLOR.WHITE, COLOR.UNDERCORE)(label)(msg)', 'http://example.com');
     });
 
     test('Curry console.log check for default color', async (t) => {
-        console.log(LABEL.WHITE, LABEL.BG_BLUE, COLOR.BLUE)('TEST12')('Testing other types converted with JSON.stringify', { id: 1 }, 12345, [1, 2, 4, 5]);
+        console.log(LABEL.WHITE, LABEL.BG_BLUE, COLOR.BLUE)('TEST12', 'Testing other types converted with JSON.stringify', { id: 1 }, 12345, [1, 2, 4, 5]);
     });
 
     test('Curry console.log check for label default color', async (t) => {
-        console.log(LABEL.DEFAULT)('TEST13')(`These should be default colors set for defaultLog and defaultLogLabel. console.log(LABEL.DEFAULT)('TEST13')(msg)`);
+        console.log(LABEL.DEFAULT)('TEST13', `These should be default colors set for defaultLog and defaultLogLabel. console.log(LABEL.DEFAULT)('TEST13')(msg)`);
     });
 
     test('Color Test', async (t) => {
@@ -119,11 +120,11 @@ if (process.argv?.[1].endsWith('test.js')) {
     });
 
     test('Test action indent.', async (t) => {
-        console.info(LABEL.DEFAULT, ACTION.INDENT())('TEST')('Testing indent');
+        console.info(LABEL.DEFAULT, ACTION.INDENT())('TEST', 'Testing indent');
     });
 
     test('Test action indent with string.', async (t) => {
-        console.info(LABEL.DEFAULT, ACTION.INDENT('--->'))('TEST')('Testing indent with string');
+        console.info(LABEL.DEFAULT, ACTION.INDENT('--->'))('TEST', 'Testing indent with string');
     });
 
     test('Check if history', async (t) => {
@@ -131,7 +132,7 @@ if (process.argv?.[1].endsWith('test.js')) {
     });
 
     test('Test Custom Hex Color', async (t) => {
-        console.log(LABEL.HEX("#5B3300","BG"))('TESTER')('testing custom hex color background');
+        console.log(LABEL.HEX("#5B3300","BG"))('TESTER', 'testing custom hex color background');
     });
 
     test('Test Custom RGB Color', async (t) => {

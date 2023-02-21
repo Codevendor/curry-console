@@ -1,6 +1,6 @@
 {
   "name": "curry-console",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "The curry-console module extends the native console logging library with many extra features like coloring, labels, recording, hiding, event emit notifications, etc.",
   "type": "module",
   "private": false,

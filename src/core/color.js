@@ -29,8 +29,6 @@ export const COLOR = {
     STRIKE: new colorObject("STRIKE", "\x1b[9m"),
     OUTLINE: new colorObject("OUTLINE", "\x1b[53m"),
     RAINBOW: new colorObject("RAINBOW", ""),
-    CAPS: new colorObject("CAPS", ""),
-    CAPFIRST: new colorObject("CAPFIRST", ""),
 
     FG_BLACK: new colorObject("FG_BLACK", "\x1b[30m"),
     FG_RED: new colorObject("FG_RED", "\x1b[31m"),

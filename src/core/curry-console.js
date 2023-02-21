@@ -169,19 +169,9 @@ export class curryConsole extends curryEventEmitter {
 
             if (a.length === 0 || onlyCurryTypes(a)) {
 
-                // Check for label
-                const found = a.find(item => item.name === 'labelObject');
-                if (found) {
-                    return (...b) => {
-                        return (...c) => {
-                            self.#process('log', a, b, c);
-                        };
-                    };
-                } else {
-                    return (...b) => {
-                        self.#process('log', a, b);
-                    };
-                }
+                return (...b) => {
+                    self.#process('log', a, b);
+                };
 
             }
 
@@ -198,19 +188,9 @@ export class curryConsole extends curryEventEmitter {
 
             if (a.length === 0 || onlyCurryTypes(a)) {
 
-                // Check for label
-                const found = a.find(item => item.name === 'labelObject');
-                if (found) {
-                    return (...b) => {
-                        return (...c) => {
-                            self.#process('info', a, b, c);
-                        };
-                    };
-                } else {
-                    return (...b) => {
-                        self.#process('info', a, b);
-                    };
-                }
+                return (...b) => {
+                    self.#process('info', a, b);
+                };
 
             }
 
@@ -227,19 +207,9 @@ export class curryConsole extends curryEventEmitter {
 
             if (a.length === 0 || onlyCurryTypes(a)) {
 
-                // Check for label
-                const found = a.find(item => item.name === 'labelObject');
-                if (found) {
-                    return (...b) => {
-                        return (...c) => {
-                            self.#process('warn', a, b, c);
-                        };
-                    };
-                } else {
-                    return (...b) => {
-                        self.#process('warn', a, b);
-                    };
-                }
+                return (...b) => {
+                    self.#process('warn', a, b);
+                };
 
             }
 
@@ -256,19 +226,9 @@ export class curryConsole extends curryEventEmitter {
 
             if (a.length === 0 || onlyCurryTypes(a)) {
 
-                // Check for label
-                const found = a.find(item => item.name === 'labelObject');
-                if (found) {
-                    return (...b) => {
-                        return (...c) => {
-                            self.#process('error', a, b, c);
-                        };
-                    };
-                } else {
-                    return (...b) => {
-                        self.#process('error', a, b);
-                    };
-                }
+                return (...b) => {
+                    self.#process('error', a, b);
+                };
 
             }
 
@@ -326,7 +286,7 @@ export class curryConsole extends curryEventEmitter {
      * @param {array} curryConsoleTypes - The curry console types to process.
      * @param {any} args - The arguments to process. 
      */
-    #process(logType, curryConsoleTypes, ...args) {
+    #process(logType, curryConsoleTypes, args) {
 
         // Get modes
         let verboseMode = this.#verbose;
@@ -346,56 +306,46 @@ export class curryConsole extends curryEventEmitter {
         const types = groupTypes(curryConsoleTypes, defaults);
 
         // Check if no label or label
-        let preLabels = [];
         let preColors = [];
         let outputArgs = [];
-        if (args.length === 1) {
 
-            // Check if color rainbow
-            if (types.colorObject.find(item => item.key === 'RAINBOW')) {
+        // Check if has label
+        let label = undefined;
+        let preLabel = '';
+        if (types.labelObject.length > 0) {
 
-                const rainbow = rainbowize(args[0]);
-                preColors = [rainbow];
-
-            } else {
-
-                // Build text
-                preColors = args[0].map(item => {
-                    if (typeof item !== 'string') item = JSON.stringify(item);
-                    return COLOR.RESET + types.colorObject.join('') + item + COLOR.RESET;
-                });
-
-            }
-
-        } else {
+            // Get label
+            label = args.shift();
 
             // Check if label rainbow
             if (types.labelObject.find(item => item.key === 'RAINBOW')) {
 
-                const rainbow = rainbowize(args[0]);
-                preLabels = [rainbow];
+                preLabel = rainbowize([label]);
 
             } else {
 
-                // Build text
-                preLabels = args[0].map(item => {
-                    if (typeof item !== 'string') item = JSON.stringify(item);
-                    return COLOR.RESET + types.labelObject.join('') + item + COLOR.RESET;
-                });
-
+                // Check if not string
+                preLabel = label;
+                if (type_of(preLabel) !== 'string') preLabel = JSON.stringify(preLabel);
+                preLabel = COLOR.RESET + types.labelObject.join('') + preLabel + COLOR.RESET;
             }
+
+        }
+
+        // Check for other parameters
+        if (args.length > 0) {
 
             // Check if color rainbow
             if (types.colorObject.find(item => item.key === 'RAINBOW')) {
 
-                const rainbow = rainbowize(args[1]);
+                const rainbow = rainbowize(args);
                 preColors = [rainbow];
 
             } else {
 
                 // Build text
-                preColors = args[1].map(item => {
-                    if (typeof item !== 'string') item = JSON.stringify(item);
+                preColors = args.map(item => {
+                    if (type_of(item) !== 'string') item = JSON.stringify(item);
                     return COLOR.RESET + types.colorObject.join('') + item + COLOR.RESET;
                 });
 
@@ -403,8 +353,13 @@ export class curryConsole extends curryEventEmitter {
 
         }
 
-        // Combine labels with colors
-        outputArgs = preLabels.concat(preColors);
+        // Check if label
+        if(label) {
+            // Combine labels with colors
+            outputArgs = [preLabel].concat(preColors);
+        } else {
+            outputArgs = preColors;
+        }
 
         // Emit event
         if (this.#emitter) this.emit('message', { type: `curryConsole.${logType}()`, params: historyItem });
@@ -466,6 +421,7 @@ export class curryConsole extends curryEventEmitter {
         const historyItem = {
             library: 'curry-console',
             type: logType,
+            label: label,
             emitterMode: emitterMode,
             verboseMode: verboseMode,
             recordMode: recordMode,

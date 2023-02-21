@@ -29,8 +29,6 @@ export const LABEL = {
     STRIKE: new labelObject("STRIKE", "\x1b[9m"),
     OUTLINE: new labelObject("OUTLINE", "\x1b[53m"),
     RAINBOW: new labelObject("RAINBOW", ""),
-    CAPS: new labelObject("CAPS", ""),
-    CAPFIRST: new labelObject("CAPFIRST", ""),
 
     FG_BLACK: new labelObject("FG_BLACK", "\x1b[30m"),
     FG_RED: new labelObject("FG_RED", "\x1b[31m"),
