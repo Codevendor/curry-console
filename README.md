@@ -244,7 +244,7 @@ Building actions into [curry-console](), that can create special features to the
 | [ACTION.DEBUG(boolean)]()               | Enables or disables DEBUG mode per message.                  | [Working]() |
 | [ACTION.DELAY(milliseconds)]()          | Delays in milliseconds the message from writing to terminal. | [Working]() |
 | [ACTION.EMITTER(boolean)]()             | Enables or disables EMIT mode per message.                   | [Working]() |
-| [ACTION.HYPERLINKS(boolean)]|           | Enables hyperlinks and underlines them in messages.          | Coming Soon... |
+| [ACTION.HYPERLINKS(boolean)]()           | Enables hyperlinks and underlines them in messages.          | Coming Soon... |
 | [ACTION.ID(string)]()                   | Allows for creating a unique id for the message.             | Coming Soon... |
 | [ACTION.INDENT(string)]()               | Allows you to indent a message line with whatever you want. Defaults to tab.             | [Working]() |
 | [ACTION.PROFILE(boolean)]()             | Enables or disables Profile mode per message.                | [Working]() |
