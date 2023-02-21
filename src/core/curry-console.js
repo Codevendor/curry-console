@@ -446,7 +446,7 @@ export class curryConsole extends curryEventEmitter {
             const cb = () => {
 
                 // Write
-                if (this.#verbose) this.#console[logType](...outputArgs, profile.output + debugInfo.output);
+                if (this.#verboseMode) this.#console[logType](...outputArgs, profile.output + debugInfo.output);
 
             };
             tempArgs.push(cb);
@@ -456,7 +456,7 @@ export class curryConsole extends curryEventEmitter {
         }
 
         // Write 
-        if (this.#verbose) this.#console[logType](...outputArgs, profile.output + debugInfo.output);
+        if (this.#verboseMode) this.#console[logType](...outputArgs, profile.output + debugInfo.output);
 
     }
 
