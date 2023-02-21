@@ -21,7 +21,7 @@ git clone https://github.com/Codevendor/curry-console.git
 ## Importing Module
 You need to import the esmodule into your code and initiate it. The [curryConsole]() class will attach itself to [console.log()](), [console.info()](), [console.warn()]() and [console.error()]() native methods through currying. 
 ```js
-import { curryConsole, COLOR, LABEL } from "curry-console";
+import { curryConsole, COLOR, LABEL, ACTION } from "curry-console";
 const curr = new curryConsole();
 ```
 
@@ -254,16 +254,16 @@ curr.debug = (true | false);
 curr.emitter = (true | false )
 
 // Defaults for log
-curr.defaultLog = [COLOR.WHITE, LABEL.WHITE, LABEL.BG_BLUE];
+curr.defaultsLog = [COLOR.WHITE, LABEL.WHITE, LABEL.BG_BLUE];
 
 // Defaults for info
-curr.defaultInfo = [COLOR.CYAN, LABEL.BLACK, LABEL.BG_CYAN];
+curr.defaultsInfo = [COLOR.CYAN, LABEL.BLACK, LABEL.BG_CYAN];
 
 // Defaults for warn
-curr.defaultWarn = [COLOR.YELLOW, LABEL.BLACK, LABEL.BG_YELLOW];
+curr.defaultsWarn = [COLOR.YELLOW, LABEL.BLACK, LABEL.BG_YELLOW];
 
 // Defaults for error
-curr.defaultError = [COLOR.RED, LABEL.WHITE, LABEL.BG_RED];
+curr.defaultsError = [COLOR.RED, LABEL.WHITE, LABEL.BG_RED];
 ```
 
 ### Global: Verbose Mode - Default: [true]()
