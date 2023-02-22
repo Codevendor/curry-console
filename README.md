@@ -431,6 +431,8 @@ Turning on this feature, will send [emit events]() every time console method is 
 <!-- CHANGELOG -->
 ## Change Log
 
+- [[ Feb 22, 2023 ]()] - Bug fix changes type_of and version typos. Updating to version 0.0.5
+
 - [[ Feb 21, 2023]()] - Changed logical code for how to handle labels. Updating readme with change. Updating to version 0.0.4
 
 - [[ Feb 20, 2023]()] - Adding in custom colors from [hex]() and [rgb](). Shorten names of globals, to make it easier to manage. Revised code and made all global settings and message level settings work. Added in action [indent]().
